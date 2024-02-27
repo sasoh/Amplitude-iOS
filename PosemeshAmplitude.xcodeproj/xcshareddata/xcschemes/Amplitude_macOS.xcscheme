@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "12C972AE24105B2C00E9CDDB"
-               BuildableName = "Amplitude.framework"
-               BlueprintName = "Amplitude_tvOS"
-               ReferencedContainer = "container:Amplitude.xcodeproj">
+               BlueprintIdentifier = "12C972E624105C6500E9CDDB"
+               BuildableName = "PosemeshAmplitude.framework"
+               BlueprintName = "PosemeshAmplitude_macOS"
+               ReferencedContainer = "container:PosemeshAmplitude.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "12C972B624105B2C00E9CDDB"
-               BuildableName = "Amplitude_tvOSTests.xctest"
-               BlueprintName = "Amplitude_tvOSTests"
-               ReferencedContainer = "container:Amplitude.xcodeproj">
+               BlueprintIdentifier = "12C972EE24105C6500E9CDDB"
+               BuildableName = "PosemeshAmplitude_macOSTests.xctest"
+               BlueprintName = "PosemeshAmplitude_macOSTests"
+               ReferencedContainer = "container:PosemeshAmplitude.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -60,10 +60,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "12C972AE24105B2C00E9CDDB"
-            BuildableName = "Amplitude.framework"
-            BlueprintName = "Amplitude_tvOS"
-            ReferencedContainer = "container:Amplitude.xcodeproj">
+            BlueprintIdentifier = "12C972E624105C6500E9CDDB"
+            BuildableName = "PosemeshAmplitude.framework"
+            BlueprintName = "PosemeshAmplitude_macOS"
+            ReferencedContainer = "container:PosemeshAmplitude.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
