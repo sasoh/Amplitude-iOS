@@ -17,7 +17,7 @@
 #import "AMPUtils.h"
 
 // expose private methods for unit testing
-@interface Amplitude (Tests)
+@interface PosemeshAmplitude (Tests)
 - (NSDictionary*)mergeEventsAndIdentifys:(NSMutableArray*)events identifys:(NSMutableArray*)identifys numEvents:(long) numEvents;
 - (id) truncate:(id) obj;
 - (long long)getNextSequenceNumber;

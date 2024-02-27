@@ -76,7 +76,7 @@
     // start new session on initializeApiKey
     id mockAmplitude = [OCMockObject partialMockForObject:self.amplitude];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:1000];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
 
     [mockAmplitude initializeApiKey:apiKey userId:nil];
     [mockAmplitude flushQueueWithQueue:[mockAmplitude initializerQueue]];
@@ -90,7 +90,7 @@
     XCTAssertEqual([mockAmplitude getSessionId], 1000000);
 
     // A new session should start on UIApplicationWillEnterForeground after minTimeBetweenSessionsMillis
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
     [mockAmplitude enterBackground]; // simulate app entering background
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -98,7 +98,7 @@
     XCTAssertEqual([mockAmplitude sessionId], 1000000);
 
     NSDate *date2 = [NSDate dateWithTimeIntervalSince1970:1000 + (self.amplitude.minTimeBetweenSessionsMillis / 1000)];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
     [mockAmplitude enterForeground]; // simulate app entering foreground
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -109,7 +109,7 @@
 
     // An event should continue the session in the foreground after minTimeBetweenSessionsMillis + 1 seconds
     NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:1000 + (self.amplitude.minTimeBetweenSessionsMillis / 1000) + 1];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date3)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date3)] currentTime];
     [mockAmplitude logEvent:@"continue_session"];
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -121,11 +121,11 @@
 
     // session should continue on UIApplicationWillEnterForeground after minTimeBetweenSessionsMillis - 1 second
     NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:2000];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date4)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date4)] currentTime];
     [mockAmplitude enterBackground]; // simulate app entering background
 
     NSDate *date5 = [NSDate dateWithTimeIntervalSince1970:2000 + (self.amplitude.minTimeBetweenSessionsMillis / 1000) - 1];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date5)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date5)] currentTime];
     [mockAmplitude enterForeground]; // simulate app entering foreground
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -136,7 +136,7 @@
 
    // test out of session event
     NSDate *date6 = [NSDate dateWithTimeIntervalSince1970:3000];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date6)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date6)] currentTime];
     [mockAmplitude logEvent:@"No Session" withEventProperties:nil outOfSession:NO];
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -145,7 +145,7 @@
                isEqualToNumber:[NSNumber numberWithLongLong:1000000 + self.amplitude.minTimeBetweenSessionsMillis]]);
 
     NSDate *date7 = [NSDate dateWithTimeIntervalSince1970:3001];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date7)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date7)] currentTime];
     // An out of session event should have session_id = -1
     [mockAmplitude logEvent:@"No Session" withEventProperties:nil outOfSession:YES];
     [mockAmplitude flushQueue];
@@ -183,7 +183,7 @@
 - (void)testTrackSessionEvents {
     id mockAmplitude = [OCMockObject partialMockForObject:self.amplitude];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:1000];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
     AMPDefaultTrackingOptions *defaultTracking = [AMPDefaultTrackingOptions initWithNoneEnabled];
     defaultTracking.sessions = YES;
     [mockAmplitude setDefaultTracking:defaultTracking];
@@ -199,11 +199,11 @@
 
 
     // test end session with tracking session events
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
     [mockAmplitude enterBackground]; // simulate app entering background
 
     NSDate *date2 = [NSDate dateWithTimeIntervalSince1970:1000 + (self.amplitude.minTimeBetweenSessionsMillis / 1000)];
-    [((Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)]) currentTime];
+    [((PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)]) currentTime];
     [mockAmplitude enterForeground]; // simulate app entering foreground
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -221,11 +221,11 @@
     XCTAssertEqualObjects([self.amplitude getLastEvent][@"event_type"], kAMPSessionStartEvent);
 
     // test in session identify with app in background
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
     [mockAmplitude enterBackground]; // simulate app entering background
 
     NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:1000 + 2 * self.amplitude.minTimeBetweenSessionsMillis];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date3)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date3)] currentTime];
     AMPIdentify *identify = [[AMPIdentify identify] set:@"key" value:@"value"];
     [mockAmplitude identify:identify outOfSession:NO];
     [mockAmplitude flushQueue];
@@ -235,7 +235,7 @@
 
     // test out of session identify with app in background
     NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:1000 + 3 * self.amplitude.minTimeBetweenSessionsMillis];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date4)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date4)] currentTime];
     [mockAmplitude identify:identify outOfSession:YES];
     [mockAmplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];
@@ -246,7 +246,7 @@
 - (void)testSessionEventsOn32BitDevices {
     id mockAmplitude = [OCMockObject partialMockForObject:self.amplitude];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:21474836470];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
     AMPDefaultTrackingOptions *defaultTracking = [AMPDefaultTrackingOptions initWithNoneEnabled];
     defaultTracking.sessions = YES;
     [mockAmplitude setDefaultTracking:defaultTracking];
@@ -262,11 +262,11 @@
 
 
     // test end session with tracking session events
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date)] currentTime];
     [mockAmplitude enterBackground]; // simulate app entering background
 
     NSDate *date2 = [NSDate dateWithTimeIntervalSince1970:214748364700];
-    [(Amplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
+    [(PosemeshAmplitude *)[[mockAmplitude expect] andReturnValue:OCMOCK_VALUE(date2)] currentTime];
     [mockAmplitude enterForeground]; // simulate app entering foreground
     [self.amplitude flushQueue];
     [NSThread sleepForTimeInterval:0.2];

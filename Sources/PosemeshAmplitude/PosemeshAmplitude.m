@@ -46,7 +46,7 @@
 #endif
 
 
-#import "Amplitude.h"
+#import "PosemeshAmplitude.h"
 #import "AmplitudePrivate.h"
 #import "AMPBackgroundNotifier.h"
 #import "AMPConstants.h"
@@ -90,7 +90,7 @@
 
 //@import AnalyticsConnector;
 
-@interface Amplitude ()
+@interface PosemeshAmplitude ()
 
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
 @property (nonatomic, strong) NSOperationQueue *initializerQueue;
@@ -123,7 +123,7 @@ static NSString *const APP_VERSION = @"app_version";
 static NSString *const APP_BUILD = @"app_build";
 
 
-@implementation Amplitude {
+@implementation PosemeshAmplitude {
     NSString *_eventsDataPath;
     NSMutableDictionary *_propertyList;
 
@@ -162,11 +162,11 @@ static NSString *const APP_BUILD = @"app_build";
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 #pragma mark - Static methods
 
-+ (Amplitude *)instance {
-    return [Amplitude instanceWithName:nil];
++ (PosemeshAmplitude *)instance {
+    return [PosemeshAmplitude instanceWithName:nil];
 }
 
-+ (Amplitude *)instanceWithName:(NSString *)instanceName {
++ (PosemeshAmplitude *)instanceWithName:(NSString *)instanceName {
     static NSMutableDictionary *_instances = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -179,7 +179,7 @@ static NSString *const APP_BUILD = @"app_build";
     }
     instanceName = [instanceName lowercaseString];
 
-    Amplitude *client = nil;
+    PosemeshAmplitude *client = nil;
     @synchronized(_instances) {
         client = [_instances objectForKey:instanceName];
         if (client == nil) {
@@ -936,7 +936,7 @@ static NSString *const APP_BUILD = @"app_build";
 - (void)uploadEventsWithDelay:(int)delay {
     if (!_updateScheduled) {
         _updateScheduled = YES;
-        __block __weak Amplitude *weakSelf = self;
+        __block __weak PosemeshAmplitude *weakSelf = self;
         [_backgroundQueue addOperationWithBlock:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf performSelector:@selector(uploadEventsInBackground) withObject:nil afterDelay:delay];
@@ -1019,9 +1019,9 @@ static NSString *const APP_BUILD = @"app_build";
 
 - (void)refreshDynamicConfig {
     if (self.useDynamicConfig) {
-        __block __weak Amplitude *weakSelf = self;
+        __block __weak PosemeshAmplitude *weakSelf = self;
         [[AMPConfigManager sharedInstance] refresh:^{
-            __block __strong Amplitude *strongSelf = weakSelf;
+            __block __strong PosemeshAmplitude *strongSelf = weakSelf;
             if (strongSelf == nil) {
                 return;
             }

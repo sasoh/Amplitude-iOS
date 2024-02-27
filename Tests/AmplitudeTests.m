@@ -20,7 +20,7 @@
 #import "AMPIngestionMetadata.h"
 #import "AMPServerZone.h"
 
-@interface Amplitude (Tests)
+@interface PosemeshAmplitude (Tests)
 
 @property (nonatomic, assign) bool initialized;
 
@@ -60,31 +60,31 @@
 }
 
 - (void)testInstanceWithName {
-    Amplitude *a = [Amplitude instance];
-    Amplitude *b = [Amplitude instanceWithName:@""];
-    Amplitude *c = [Amplitude instanceWithName:nil];
-    Amplitude *e = [Amplitude instanceWithName:kAMPDefaultInstance];
-    Amplitude *f = [Amplitude instanceWithName:@"app1"];
-    Amplitude *g = [Amplitude instanceWithName:@"app2"];
+    PosemeshAmplitude *a = [PosemeshAmplitude instance];
+    PosemeshAmplitude *b = [PosemeshAmplitude instanceWithName:@""];
+    PosemeshAmplitude *c = [PosemeshAmplitude instanceWithName:nil];
+    PosemeshAmplitude *e = [PosemeshAmplitude instanceWithName:kAMPDefaultInstance];
+    PosemeshAmplitude *f = [PosemeshAmplitude instanceWithName:@"app1"];
+    PosemeshAmplitude *g = [PosemeshAmplitude instanceWithName:@"app2"];
 
     XCTAssertEqual(a, b);
     XCTAssertEqual(b, c);
     XCTAssertEqual(c, e);
     XCTAssertEqual(e, a);
-    XCTAssertEqual(e, [Amplitude instance]);
+    XCTAssertEqual(e, [PosemeshAmplitude instance]);
     XCTAssertNotEqual(e,f);
-    XCTAssertEqual(f, [Amplitude instanceWithName:@"app1"]);
+    XCTAssertEqual(f, [PosemeshAmplitude instanceWithName:@"app1"]);
     XCTAssertNotEqual(f,g);
-    XCTAssertEqual(g, [Amplitude instanceWithName:@"app2"]);
+    XCTAssertEqual(g, [PosemeshAmplitude instanceWithName:@"app2"]);
 }
 
 - (void)testInitWithInstanceName {
-    Amplitude *a = [Amplitude instanceWithName:@"APP1"];
+    PosemeshAmplitude *a = [PosemeshAmplitude instanceWithName:@"APP1"];
     [a flushQueueWithQueue:a.initializerQueue];
     XCTAssertEqualObjects(a.instanceName, @"app1");
     XCTAssertTrue([a.propertyListPath rangeOfString:@"com.amplitude.plist_app1"].location != NSNotFound);
 
-    Amplitude *b = [Amplitude instanceWithName:[kAMPDefaultInstance uppercaseString]];
+    PosemeshAmplitude *b = [PosemeshAmplitude instanceWithName:[kAMPDefaultInstance uppercaseString]];
     [b flushQueueWithQueue:b.initializerQueue];
     XCTAssertEqualObjects(b.instanceName, kAMPDefaultInstance);
     XCTAssertTrue([b.propertyListPath rangeOfString:@"com.amplitude.plist"].location != NSNotFound);
@@ -122,11 +122,11 @@
     [oldDbHelper addIdentify:@"{\"event_type\":\"$identify\"}"];
     [oldDbHelper addIdentify:@"{\"event_type\":\"$identify\"}"];
 
-    [[Amplitude instance] setDeviceId:@"oldDeviceId"];
-    [[Amplitude instance] flushQueue];
+    [[PosemeshAmplitude instance] setDeviceId:@"oldDeviceId"];
+    [[PosemeshAmplitude instance] flushQueue];
     XCTAssertEqualObjects([oldDbHelper getValue:@"device_id"], @"oldDeviceId");
-    XCTAssertEqualObjects([[Amplitude instance] getDeviceId], @"oldDeviceId");
-    XCTAssertEqual([[Amplitude instance] getNextSequenceNumber], 1001);
+    XCTAssertEqualObjects([[PosemeshAmplitude instance] getDeviceId], @"oldDeviceId");
+    XCTAssertEqual([[PosemeshAmplitude instance] getNextSequenceNumber], 1001);
 
     XCTAssertNil([newDBHelper1 getValue:@"device_id"]);
     XCTAssertNil([newDBHelper2 getValue:@"device_id"]);
@@ -135,20 +135,20 @@
     XCTAssertNil([newDBHelper2 getLongValue:@"sequence_number"]);
 
     // init first new app and verify separate database
-    [[Amplitude instanceWithName:newInstance1] initializeApiKey:newApiKey1];
-    [[Amplitude instanceWithName:newInstance1] flushQueue];
-    XCTAssertNotEqualObjects([[Amplitude instanceWithName:newInstance1] getDeviceId], @"oldDeviceId");
-    XCTAssertEqualObjects([[Amplitude instanceWithName:newInstance1] getDeviceId], [newDBHelper1 getValue:@"device_id"]);
-    XCTAssertEqual([[Amplitude instanceWithName:newInstance1] getNextSequenceNumber], 1);
+    [[PosemeshAmplitude instanceWithName:newInstance1] initializeApiKey:newApiKey1];
+    [[PosemeshAmplitude instanceWithName:newInstance1] flushQueue];
+    XCTAssertNotEqualObjects([[PosemeshAmplitude instanceWithName:newInstance1] getDeviceId], @"oldDeviceId");
+    XCTAssertEqualObjects([[PosemeshAmplitude instanceWithName:newInstance1] getDeviceId], [newDBHelper1 getValue:@"device_id"]);
+    XCTAssertEqual([[PosemeshAmplitude instanceWithName:newInstance1] getNextSequenceNumber], 1);
     XCTAssertEqual([newDBHelper1 getEventCount], 0);
     XCTAssertEqual([newDBHelper1 getIdentifyCount], 0);
 
     // init second new app and verify separate database
-    [[Amplitude instanceWithName:newInstance2] initializeApiKey:newApiKey2];
-    [[Amplitude instanceWithName:newInstance2] flushQueue];
-    XCTAssertNotEqualObjects([[Amplitude instanceWithName:newInstance2] getDeviceId], @"oldDeviceId");
-    XCTAssertEqualObjects([[Amplitude instanceWithName:newInstance2] getDeviceId], [newDBHelper2 getValue:@"device_id"]);
-    XCTAssertEqual([[Amplitude instanceWithName:newInstance2] getNextSequenceNumber], 1);
+    [[PosemeshAmplitude instanceWithName:newInstance2] initializeApiKey:newApiKey2];
+    [[PosemeshAmplitude instanceWithName:newInstance2] flushQueue];
+    XCTAssertNotEqualObjects([[PosemeshAmplitude instanceWithName:newInstance2] getDeviceId], @"oldDeviceId");
+    XCTAssertEqualObjects([[PosemeshAmplitude instanceWithName:newInstance2] getDeviceId], [newDBHelper2 getValue:@"device_id"]);
+    XCTAssertEqual([[PosemeshAmplitude instanceWithName:newInstance2] getNextSequenceNumber], 1);
     XCTAssertEqual([newDBHelper2 getEventCount], 0);
     XCTAssertEqual([newDBHelper2 getIdentifyCount], 0);
 
@@ -159,8 +159,8 @@
     XCTAssertEqual([oldDbHelper getIdentifyCount], 2);
 
     // verify both apps can modify database independently and not affect old database
-    [[Amplitude instanceWithName:newInstance1] setDeviceId:@"fakeDeviceId"];
-    [[Amplitude instanceWithName:newInstance1] flushQueue];
+    [[PosemeshAmplitude instanceWithName:newInstance1] setDeviceId:@"fakeDeviceId"];
+    [[PosemeshAmplitude instanceWithName:newInstance1] flushQueue];
     XCTAssertEqualObjects([newDBHelper1 getValue:@"device_id"], @"fakeDeviceId");
     XCTAssertNotEqualObjects([newDBHelper2 getValue:@"device_id"], @"fakeDeviceId");
     XCTAssertEqualObjects([oldDbHelper getValue:@"device_id"], @"oldDeviceId");
@@ -169,8 +169,8 @@
     XCTAssertEqual([newDBHelper2 getIdentifyCount], 0);
     XCTAssertEqual([oldDbHelper getIdentifyCount], 2);
 
-    [[Amplitude instanceWithName:newInstance2] setDeviceId:@"brandNewDeviceId"];
-    [[Amplitude instanceWithName:newInstance2] flushQueue];
+    [[PosemeshAmplitude instanceWithName:newInstance2] setDeviceId:@"brandNewDeviceId"];
+    [[PosemeshAmplitude instanceWithName:newInstance2] flushQueue];
     XCTAssertEqualObjects([newDBHelper1 getValue:@"device_id"], @"fakeDeviceId");
     XCTAssertEqualObjects([newDBHelper2 getValue:@"device_id"], @"brandNewDeviceId");
     XCTAssertEqualObjects([oldDbHelper getValue:@"device_id"], @"oldDeviceId");
@@ -186,7 +186,7 @@
 
 - (void)testInitializeLoadUserIdFromEventData {
     NSString *instanceName = @"testInitialize";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client flushQueue];
     XCTAssertEqual([client userId], nil);
 
@@ -211,7 +211,7 @@
 
 - (void)testInitializeWithUserId {
     NSString *instanceName = @"testInitializeWithUserId";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client flushQueue];
     XCTAssertEqual([client userId], nil);
 
@@ -507,7 +507,7 @@
     [event_properties setObject:@"productIdentifier" forKey:@"$productId"];
     [event_properties setObject:[NSNumber numberWithDouble:10.99] forKey:@"$price"];
     [event_properties setObject:[NSNumber numberWithInt:2] forKey:@"$quantity"];
-    [[Amplitude instance] logEvent:@"Completed Purchase" withEventProperties:event_properties];
+    [[PosemeshAmplitude instance] logEvent:@"Completed Purchase" withEventProperties:event_properties];
 }
 
 - (void)testMergeEventsAndIdentifys {
@@ -968,7 +968,7 @@
 
     NSString *value = @"12340000-0000-0000-0000-000000000000";
 
-    Amplitude *client = [Amplitude instanceWithName:@"idfa"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"idfa"];
     client.adSupportBlock = ^NSString * _Nonnull{
         return value;
     };
@@ -991,7 +991,7 @@
 
     NSString *value = @"12340000-0000-0000-0000-000000000000";
 
-    Amplitude *client = [Amplitude instanceWithName:@"disable_idfa"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"disable_idfa"];
     client.adSupportBlock = ^NSString * _Nonnull{
         return value;
     };
@@ -1013,7 +1013,7 @@
         [dbHelper deleteDB];
     }
 
-    Amplitude *client = [Amplitude instanceWithName:@"idfv"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"idfv"];
 
     AMPDeviceInfo * deviceInfo = [[AMPDeviceInfo alloc] init];
 
@@ -1028,7 +1028,7 @@
     AMPTrackingOptions *options = [[AMPTrackingOptions options] disableIDFV];
     AMPDeviceInfo *deviceInfo = [[AMPDeviceInfo alloc] init];
 
-    Amplitude *client = [Amplitude instanceWithName:@"disable_idfv"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"disable_idfv"];
     [client flushQueueWithQueue:client.initializerQueue];
     [client setTrackingOptions:options];
     [client initializeApiKey:@"api key"];
@@ -1095,7 +1095,7 @@
 }
 
 - (void)testCustomizedLibrary {
-    Amplitude *client = [Amplitude instanceWithName:@"custom_lib"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"custom_lib"];
     [client initializeApiKey:@"blah"];
 
     client.libraryName = @"amplitude-unity";
@@ -1114,7 +1114,7 @@
 }
 
 - (void)testCustomizedLibraryWithNilVersion {
-    Amplitude *client = [Amplitude instanceWithName:@"custom_lib"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"custom_lib"];
     [client initializeApiKey:@"blah"];
 
     client.libraryName = @"amplitude-unity";
@@ -1133,7 +1133,7 @@
 }
 
 - (void)testCustomizedLibraryWithNilLibrary {
-    Amplitude *client = [Amplitude instanceWithName:@"custom_lib"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"custom_lib"];
     [client initializeApiKey:@"blah"];
 
     client.libraryName = nil;
@@ -1152,7 +1152,7 @@
 }
 
 - (void)testCustomizedLibraryWithNilLibraryAndVersion {
-    Amplitude *client = [Amplitude instanceWithName:@"custom_lib"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"custom_lib"];
     [client initializeApiKey:@"blah"];
 
     client.libraryName = nil;
@@ -1171,7 +1171,7 @@
 }
 
 - (void)testSetPlan {
-    Amplitude *client = [Amplitude instanceWithName:@"observe_plan"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"observe_plan"];
     [client initializeApiKey:@"tracking_plan"];
     NSString *branch = @"main";
     NSString *source = @"mobile";
@@ -1192,7 +1192,7 @@
 }
 
 - (void)testSetIngestionMetadata {
-    Amplitude *client = [Amplitude instanceWithName:@"ingestion_metadata"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"ingestion_metadata"];
     [client initializeApiKey:@"ingestion_metadata"];
     NSString *sourceName = @"ampli";
     NSString *sourceVersion = @"2.0.0";
@@ -1209,7 +1209,7 @@
 }
 
 - (void)testSetServerZone {
-    Amplitude *client = [Amplitude instanceWithName:@"eu_zone"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"eu_zone"];
     XCTAssertEqualObjects(kAMPEventLogUrl, [client valueForKey:@"serverUrl"]);
     [client initializeApiKey:@"eu_api_key"];
     [client setServerZone:EU];
@@ -1217,7 +1217,7 @@
 }
 
 - (void)testSetServerZoneWithoutUpdateServerUrl {
-    Amplitude *client = [Amplitude instanceWithName:@"eu_zone_2"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"eu_zone_2"];
     XCTAssertEqualObjects(kAMPEventLogUrl, [client valueForKey:@"serverUrl"]);
     [client initializeApiKey:@"eu_api_key"];
     [client setServerZone:EU updateServerUrl:NO];
@@ -1231,7 +1231,7 @@
         [payload.event setValue:payload.extra[@"description"] forKey:@"description"];
         next(payload);
     }];
-    Amplitude *client = [Amplitude instanceWithName:@"middleware_support"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"middleware_support"];
     [client addEventMiddleware:updateEventTypeMiddleware];
     [client initializeApiKey:@"middleware_api_key"];
     NSMutableDictionary *eventProperties = [NSMutableDictionary dictionary];
@@ -1249,7 +1249,7 @@
 - (void)testSwallowMiddleware {
     AMPBlockMiddleware *swallowMiddleware = [[AMPBlockMiddleware alloc] initWithBlock: ^(AMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
     }];
-    Amplitude *client = [Amplitude instanceWithName:@"middleware_swallow"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"middleware_swallow"];
     [client addEventMiddleware:swallowMiddleware];
     [client initializeApiKey:@"middleware_api_key"];
     [client logEvent:@"test"];
@@ -1260,7 +1260,7 @@
 
 -(void)testLogEventWithUserProperties {
     NSString *instanceName = @"eventWithUserProperties";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client initializeApiKey:@"api-key"];
 
     AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper:instanceName];
@@ -1282,14 +1282,14 @@
 
 -(void)testNoDeferCheckInForeground {
     NSString *instanceName = @"noDeferCheckInForegroundInstance";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client initializeApiKey:@"api-key"];
     XCTAssertEqual(client.initialized, YES);
 }
 
 -(void)testDeferCheckInForeground {
     NSString *instanceName = @"DeferCheckInForegroundInstance";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client setDeferCheckInForeground:YES];
     [client initializeApiKey:@"api-key"];
     XCTAssertEqual(client.initialized, NO);
@@ -1300,7 +1300,7 @@
 
 -(void)testSetIdentifyUploadSecondsOnInitializedClient {
     NSString *instanceName = @"SetIdentifyUploadSecondsOnInitializedClient";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client initializeApiKey:@"api-key"];
 
     // Check minimum
@@ -1314,7 +1314,7 @@
 
 -(void)testSetIdentifyUploadSecondsOnUninitializedClient {
     NSString *instanceName = @"SetIdentifyUploadSecondsOnUninitializedClient";
-    Amplitude *uninitializedClient = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *uninitializedClient = [PosemeshAmplitude instanceWithName:instanceName];
 
     // Don't initialized the client
 
@@ -1415,7 +1415,7 @@
 
 - (void)testInterceptedIdentifysAreSentOnUploadEvents {
     NSString *instanceName = @"testInterceptedIdentifysAreSentOnUploadEvents";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     [client initializeApiKey:@"api-key"];
     AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper:instanceName];
 
@@ -1557,7 +1557,7 @@
 }
 
 - (void)testSetDefaultTrackingOptions {
-    Amplitude *client = [Amplitude instanceWithName:@"default_tracking"];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"default_tracking"];
     client.defaultTracking = [AMPDefaultTrackingOptions initWithSessions:NO
                                                            appLifecycles:YES
                                                                deepLinks:YES
@@ -1578,7 +1578,7 @@
     OCMStub([mockApplication applicationState]).andReturn(UIApplicationStateInactive);
     
     NSString *instanceName = @"default_tracking_ObserveDidFinishLaunchingNotification";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
@@ -1606,7 +1606,7 @@
     OCMStub([mockApplication applicationState]).andReturn(UIApplicationStateInactive);
     
     NSString *instanceName = @"default_tracking_ObserveDidFinishLaunchingNotificationWithPreviousBuild";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
@@ -1635,7 +1635,7 @@
     OCMStub([mockApplication applicationState]).andReturn(UIApplicationStateInactive);
     
     NSString *instanceName = @"default_tracking_ObserveWillEnterForegroundNotification";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
@@ -1656,7 +1656,7 @@
     OCMStub([mockApplication applicationState]).andReturn(UIApplicationStateInactive);
     
     NSString *instanceName = @"default_tracking_ObserveDidEnterBackgroundNotification";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
@@ -1674,7 +1674,7 @@
 
 - (void)testContinueUserActivityFiresDeepLinkEvent {
     NSString *instanceName = @"default_tracking_UserActivityFiresDeepLinkEvent";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.deepLinks = YES;
     [client initializeApiKey:@"default_tracking"];
 
@@ -1691,7 +1691,7 @@
 
 - (void)testOpenURLFiresDeepLinkEvent {
     NSString *instanceName = @"default_tracking_OpenURLFiresDeepLinkEvent";
-    Amplitude *client = [Amplitude instanceWithName:instanceName];
+    PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:instanceName];
     client.defaultTracking.deepLinks = YES;
     [client initializeApiKey:@"default_tracking"];
 

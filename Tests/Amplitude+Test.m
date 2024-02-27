@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Amplitude. All rights reserved.
 //
 
-#import "Amplitude.h"
+#import "PosemeshAmplitude.h"
 #import "Amplitude+Test.h"
 #import "AMPDatabaseHelper.h"
 
-@implementation Amplitude (Test)
+@implementation PosemeshAmplitude (Test)
 
 @dynamic backgroundQueue;
 @dynamic initializerQueue;

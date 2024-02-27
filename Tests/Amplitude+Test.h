@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Amplitude (Test)
+@interface PosemeshAmplitude (Test)
 
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
 @property (nonatomic, strong) NSOperationQueue *initializerQueue;

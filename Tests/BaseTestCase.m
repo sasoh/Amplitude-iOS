@@ -22,7 +22,7 @@ NSString *const userId = @"userId";
 
 - (void)setUp {
     [super setUp];
-    self.amplitude = [Amplitude alloc];
+    self.amplitude = [PosemeshAmplitude alloc];
     self.databaseHelper = [AMPDatabaseHelper getDatabaseHelper];
     XCTAssertTrue([self.databaseHelper resetDB:NO]);
 

@@ -22,9 +22,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Amplitude.h"
+#import "PosemeshAmplitude.h"
 
-@interface Amplitude (SSLPinning)
+@interface PosemeshAmplitude (SSLPinning)
 
 #ifdef AMPLITUDE_SSL_PINNING
 @property (nonatomic, assign) BOOL sslPinningEnabled;

@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "Amplitude.h"
+#import "PosemeshAmplitude.h"
 #import "Amplitude+Test.h"
 #import "BaseTestCase.h"
 #import "UIViewController+AMPScreen.h"
@@ -24,7 +24,7 @@
 
 - (void)setUp {
     [super setUp];
-    Amplitude *amplitude = [Amplitude instance];
+    PosemeshAmplitude *amplitude = [PosemeshAmplitude instance];
     amplitude.defaultTracking.screenViews = YES;
     [amplitude initializeApiKey:@"test-api-key"];
     

@@ -1,5 +1,5 @@
 // All Amplitude public headers
-#import <PosemeshAmplitude/Amplitude.h>
+#import <PosemeshAmplitude/PosemeshAmplitude.h>
 #import <PosemeshAmplitude/AMPIdentify.h>
 #import <PosemeshAmplitude/AMPRevenue.h>
 #import <PosemeshAmplitude/AMPTrackingOptions.h>

@@ -58,7 +58,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  For more details on the setup and usage, be sure to checkout the [README](https://github.com/amplitude/Amplitude-iOS#amplitude-ios-sdk)
  */
-@interface Amplitude : NSObject
+@interface PosemeshAmplitude : NSObject
 
 #pragma mark - Properties
 
@@ -224,7 +224,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  @returns the default Amplitude SDK instance
  */
-+ (Amplitude *)instance;
++ (PosemeshAmplitude *)instance;
 
 /**
  This fetches a named SDK instance. Use this if logging events to multiple Amplitude apps.
@@ -235,7 +235,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  @see [Tracking Events to Multiple Amplitude Apps](https://github.com/amplitude/amplitude-ios#tracking-events-to-multiple-amplitude-apps)
  */
-+ (Amplitude *)instanceWithName:(nullable NSString *)instanceName;
++ (PosemeshAmplitude *)instanceWithName:(nullable NSString *)instanceName;
 
 /**-----------------------------------------------------------------------------
  * @name Initialize the Amplitude SDK with your Amplitude API Key

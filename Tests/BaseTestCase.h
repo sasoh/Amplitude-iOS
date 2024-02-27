@@ -19,7 +19,7 @@ extern NSString *const userId;
 
 @interface BaseTestCase : XCTestCase
 
-@property (nonatomic, strong) Amplitude *amplitude;
+@property (nonatomic, strong) PosemeshAmplitude *amplitude;
 @property (nonatomic, strong) AMPDatabaseHelper *databaseHelper;
 
 - (BOOL) archive:(id)rootObject toFile:(NSString *)path;

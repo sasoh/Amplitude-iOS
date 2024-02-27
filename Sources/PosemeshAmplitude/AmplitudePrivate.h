@@ -6,9 +6,9 @@
 //  Copyright © 2020 Amplitude. All rights reserved.
 //
 
-#import "Amplitude.h"
+#import "PosemeshAmplitude.h"
 
-@interface Amplitude ()
+@interface PosemeshAmplitude ()
 
 @property (nonatomic, copy, readwrite) NSString *apiKey;
 @property (nonatomic, copy, readwrite) NSString *instanceName;
