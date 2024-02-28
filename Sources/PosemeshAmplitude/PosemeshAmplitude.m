@@ -994,10 +994,11 @@ static NSString *const APP_BUILD = @"app_build";
         NSMutableArray *uploadEvents = [merged objectForKey:EVENTS];
         long long maxEventId = [[merged objectForKey:MAX_EVENT_ID] longLongValue];
         long long maxIdentifyId = [[merged objectForKey:MAX_IDENTIFY_ID] longLongValue];
+        NSDictionary *uploadEventsPosemesh = @{@"events": uploadEvents};
 
         NSError *error = nil;
         NSData *eventsDataLocal = nil;
-        eventsDataLocal = [NSJSONSerialization dataWithJSONObject:uploadEvents options:0 error:&error];
+        eventsDataLocal = [NSJSONSerialization dataWithJSONObject:uploadEventsPosemesh options:0 error:&error];
         if (error != nil) {
             AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", error);
             self->_updatingCurrently = NO;
@@ -1091,41 +1092,11 @@ static NSString *const APP_BUILD = @"app_build";
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setTimeoutInterval:60.0];
 
-    NSString *apiVersionString = [[NSNumber numberWithInt:kAMPApiVersion] stringValue];
-
-    NSMutableData *postData = [[NSMutableData alloc] init];
-    [postData appendData:[@"v=" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postData appendData:[apiVersionString dataUsingEncoding:NSUTF8StringEncoding]];
-    [postData appendData:[@"&client=" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postData appendData:[self.apiKey dataUsingEncoding:NSUTF8StringEncoding]];
-    [postData appendData:[@"&e=" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postData appendData:[[self urlEncodeString:events] dataUsingEncoding:NSUTF8StringEncoding]];
-
-    // Add timestamp of upload
-    [postData appendData:[@"&upload_time=" dataUsingEncoding:NSUTF8StringEncoding]];
-    NSString *timestampString = [[NSNumber numberWithLongLong:[[self currentTime] timeIntervalSince1970] * 1000] stringValue];
-    [postData appendData:[timestampString dataUsingEncoding:NSUTF8StringEncoding]];
-
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:@"POST"];
-    [request setValue:self.contentTypeHeader forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[postData length]] forHTTPHeaderField:@"Content-Length"];
-
-    if (_token != nil) {
-        NSString *auth = [NSString stringWithFormat:@"Bearer %@", _token];
-        AMPLITUDE_LOG(@"Attaching bearer %@", _token);
-        [request setValue:auth forHTTPHeaderField:@"Authorization"];
-    }
-
-    [request setHTTPBody:postData];
-    AMPLITUDE_LOG(@"Events: %@", events);
-
-    // If pinning is enabled, use the AMPURLSession that handles it.
-#if AMPLITUDE_SSL_PINNING
-    id session = (self.sslPinningEnabled ? [AMPURLSession class] : [NSURLSession class]);
-#else
-    id session = [NSURLSession class];
-#endif
-    [[[session sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [request setHTTPBody:[NSData dataWithData:[events dataUsingEncoding:NSUTF8StringEncoding]]];
+    
+    [[[[NSURLSession class] sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         BOOL uploadSuccessful = NO;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if (response != nil) {
