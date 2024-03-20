@@ -1,5 +1,5 @@
 //
-//  AMPServerZone.h
+//  PosemeshAMPServerZone.h
 //  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,17 +22,17 @@
 //
 #import <Foundation/Foundation.h>
 /**
- * AMPServerZone is for Data Residency and handling server zone related properties.
+ * PosemeshAMPServerZone is for Data Residency and handling server zone related properties.
  * The server zones now are US and EU.
  *
  * For usage like sending data to Amplitude's EU servers, you need to configure the serverZone
  * property after initializing the client with setServerZone method.
  */
-typedef NS_ENUM(NSInteger, AMPServerZone);
+typedef NS_ENUM(NSInteger, PosemeshAMPServerZone);
 
 #ifndef PosemeshAMPServerZone_h
 #define PosemeshAMPServerZone_h
-typedef NS_ENUM(NSInteger, AMPServerZone) {
+typedef NS_ENUM(NSInteger, PosemeshAMPServerZone) {
     US,
     EU
 };

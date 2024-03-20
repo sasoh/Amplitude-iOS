@@ -50,7 +50,7 @@
     return self;
 }
 
-- (void)refresh:(void(^)(void))completionHandler serverZone:(AMPServerZone)serverZone {
+- (void)refresh:(void(^)(void))completionHandler serverZone:(PosemeshAMPServerZone)serverZone {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[PosemeshAMPServerZoneUtil getDynamicConfigApi:serverZone]]];
 
     NSURLSession *session = [NSURLSession sharedSession];

@@ -153,7 +153,7 @@ static NSString *const APP_BUILD = @"app_build";
     NSString *_token;
     PosemeshAMPPlan *_plan;
     PosemeshAMPIngestionMetadata *_ingestionMetadata;
-    AMPServerZone _serverZone;
+    PosemeshAMPServerZone _serverZone;
     PosemeshAMPMiddlewareRunner *_middlewareRunner;
     PosemeshAMPIdentifyInterceptor *_identifyInterceptor;
 }
@@ -1595,11 +1595,11 @@ static NSString *const APP_BUILD = @"app_build";
     _ingestionMetadata = ingestionMetadata;
 }
 
-- (void)setServerZone:(AMPServerZone)serverZone {
+- (void)setServerZone:(PosemeshAMPServerZone)serverZone {
     [self setServerZone:serverZone updateServerUrl:YES];
 }
 
-- (void)setServerZone:(AMPServerZone)serverZone updateServerUrl:(BOOL)updateServerUrl {
+- (void)setServerZone:(PosemeshAMPServerZone)serverZone updateServerUrl:(BOOL)updateServerUrl {
     _serverZone = serverZone;
     if (updateServerUrl) {
         [self setServerUrl:[PosemeshAMPServerZoneUtil getEventLogApi:serverZone]];

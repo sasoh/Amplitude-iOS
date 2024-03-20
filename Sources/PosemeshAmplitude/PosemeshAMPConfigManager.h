@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSString *ingestionEndpoint;
 
 + (instancetype)sharedInstance;
-- (void)refresh:(void(^)(void))completionHandler serverZone:(AMPServerZone)serverZone;
+- (void)refresh:(void(^)(void))completionHandler serverZone:(PosemeshAMPServerZone)serverZone;
 
 @end
 

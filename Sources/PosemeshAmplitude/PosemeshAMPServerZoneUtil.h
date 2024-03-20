@@ -26,8 +26,8 @@
 
 @interface PosemeshAMPServerZoneUtil : NSObject
 
-+ (NSString *)getEventLogApi:(AMPServerZone)serverZone;
++ (NSString *)getEventLogApi:(PosemeshAMPServerZone)serverZone;
 
-+ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone;
++ (NSString *)getDynamicConfigApi:(PosemeshAMPServerZone)serverZone;
 
 @end

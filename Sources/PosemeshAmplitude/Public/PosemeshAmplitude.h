@@ -683,13 +683,13 @@ typedef void (^AMPInitCompletionBlock)(void);
  * Set Amplitude Server Zone, switch to zone related configuration, including dynamic configuration and server url.
  * To send data to Amplitude's EU servers, you need to configure the serverZone to EU like [client setServerZone:EU]
  */
-- (void)setServerZone:(AMPServerZone)serverZone;
+- (void)setServerZone:(PosemeshAMPServerZone)serverZone;
 
 /**
  * Set Amplitude Server Zone, switch to zone related configuration, including dynamic configuration and server url.
  * If updateServerUrl is true, including server url as well. Recommend to keep updateServerUrl to be true for alignment.
  */
-- (void)setServerZone:(AMPServerZone)serverZone updateServerUrl:(BOOL)updateServerUrl;
+- (void)setServerZone:(PosemeshAMPServerZone)serverZone updateServerUrl:(BOOL)updateServerUrl;
 
 /**
  * Adds a new middleware function to run on each logEvent() call prior to sending to Amplitude.

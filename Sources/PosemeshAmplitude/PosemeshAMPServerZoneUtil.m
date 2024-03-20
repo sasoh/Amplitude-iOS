@@ -28,7 +28,7 @@
 
 @implementation PosemeshAMPServerZoneUtil
 
-+ (NSString *)getEventLogApi:(AMPServerZone)serverZone {
++ (NSString *)getEventLogApi:(PosemeshAMPServerZone)serverZone {
     NSString *eventLogUrl = kAMPEventLogUrl;
     switch (serverZone) {
         case EU:
@@ -44,7 +44,7 @@
     return eventLogUrl;
 }
 
-+ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone {
++ (NSString *)getDynamicConfigApi:(PosemeshAMPServerZone)serverZone {
     NSString *dynamicConfigUrl = kAMPDyanmicConfigUrl;
     switch (serverZone) {
         case EU:

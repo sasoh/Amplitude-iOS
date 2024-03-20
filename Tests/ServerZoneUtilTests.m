@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AMPServerZone.h"
+#import "PosemeshAMPServerZone.h"
 #import "PosemeshAMPServerZoneUtil.h"
 #import "AMPConstants.h"
 

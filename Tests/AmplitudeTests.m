@@ -18,7 +18,7 @@
 #import "AMPTrackingOptions.h"
 #import "AMPPlan.h"
 #import "AMPIngestionMetadata.h"
-#import "AMPServerZone.h"
+#import "PosemeshAMPServerZone.h"
 
 @interface PosemeshAmplitude (Tests)
 

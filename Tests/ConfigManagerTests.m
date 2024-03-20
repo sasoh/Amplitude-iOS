@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "AMPConfigManager.h"
-#import "AMPServerZone.h"
+#import "PosemeshAMPServerZone.h"
 #import "AMPConstants.h"
 
 @interface ConfigManagerTests : XCTestCase

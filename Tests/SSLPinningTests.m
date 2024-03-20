@@ -16,7 +16,7 @@
 #import "AMPURLSession.h"
 #import "Amplitude+SSLPinning.h"
 #import "AMPConstants.h"
-#import "AMPServerZone.h"
+#import "PosemeshAMPServerZone.h"
 
 @interface AMPURLSession (Test)
 
