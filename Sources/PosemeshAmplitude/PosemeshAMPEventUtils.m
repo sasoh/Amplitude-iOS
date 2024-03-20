@@ -33,15 +33,15 @@
 #endif
 #endif
 
-#import "AMPUtils.h"
-#import "AMPEventUtils.h"
+#import "PosemeshAMPUtils.h"
+#import "PosemeshAMPEventUtils.h"
 
-@interface AMPEventUtils ()
+@interface PosemeshAMPEventUtils ()
 @end
 
 static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
-@implementation AMPEventUtils
+@implementation PosemeshAMPEventUtils
 
 + (instancetype)alloc {
     // Util class cannot be instantiated.
@@ -85,14 +85,14 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 }
 
 + (NSString *_Nullable)getJsonString:(NSDictionary *_Nonnull)event eventType:(NSString *_Nonnull)eventType error:(NSError **)error {
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[PosemeshAMPUtils makeJSONSerializable:event] options:0 error:error];
     if (*error != nil) {
         AMPLITUDE_ERROR(@"ERROR: could not JSONSerialize event type %@: %@", eventType, *error);
         return nil;
     }
 
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    if ([AMPUtils isEmptyString:jsonString]) {
+    if ([PosemeshAMPUtils isEmptyString:jsonString]) {
         AMPLITUDE_ERROR(@"ERROR: JSONSerializing event type %@ resulted in an NULL string", eventType);
         *error = [NSError errorWithDomain:@"com.amplitude"
                           code:100

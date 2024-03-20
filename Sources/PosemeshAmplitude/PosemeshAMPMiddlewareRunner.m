@@ -22,10 +22,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AMPMiddlewareRunner.h"
+#import "PosemeshAMPMiddlewareRunner.h"
 #import "AMPMiddleware.h"
 
-@implementation AMPMiddlewareRunner
+@implementation PosemeshAMPMiddlewareRunner
 
 - (instancetype)init {
     if ((self = [super init])) {
@@ -42,12 +42,12 @@
     [self.middlewares addObject:middleware];
 }
 
-- (void) run:(AMPMiddlewarePayload *_Nonnull)payload next:(AMPMiddlewareNext _Nonnull)next {
+- (void) run:(PosemeshAMPMiddlewarePayload *_Nonnull)payload next:(AMPMiddlewareNext _Nonnull)next {
     [self runMiddlewares:self.middlewares payload:payload callback:next];
 }
 
 - (void) runMiddlewares:(NSArray<id<AMPMiddleware>> *_Nonnull)middlewares
-                payload:(AMPMiddlewarePayload *_Nonnull)payload
+                payload:(PosemeshAMPMiddlewarePayload *_Nonnull)payload
                callback:(AMPMiddlewareNext _Nullable)callback {
     if (middlewares.count == 0) {
         if (callback) {
@@ -56,7 +56,7 @@
         return;
     }
     
-    [middlewares[0] run:payload next:^(AMPMiddlewarePayload *_Nullable newPayload) {
+    [middlewares[0] run:payload next:^(PosemeshAMPMiddlewarePayload *_Nullable newPayload) {
         NSArray *remainingMiddlewares = [middlewares subarrayWithRange:NSMakeRange(1, middlewares.count - 1)];
         [self runMiddlewares:remainingMiddlewares payload:newPayload callback:callback];
     }];

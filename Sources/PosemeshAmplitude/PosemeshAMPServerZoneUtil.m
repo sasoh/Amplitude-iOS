@@ -1,5 +1,5 @@
 //
-//  AMPIdentifyInterceptor.h
+//  AMPServerZoneUtil.m
 //  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,19 +20,44 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+
 #import <Foundation/Foundation.h>
-#import "AMPIdentifyInterceptor.h"
-#import "AMPDatabaseHelper.h"
+#import "PosemeshAMPServerZone.h"
+#import "PosemeshAMPServerZoneUtil.h"
+#import "AMPConstants.h"
 
-@interface AMPIdentifyInterceptor : NSObject
+@implementation PosemeshAMPServerZoneUtil
 
-+ (instancetype _Nonnull)getIdentifyInterceptor:(AMPDatabaseHelper *_Nonnull)dbHelper
-                                backgroundQueue:(NSOperationQueue *_Nonnull)backgroundQueue;
++ (NSString *)getEventLogApi:(AMPServerZone)serverZone {
+    NSString *eventLogUrl = kAMPEventLogUrl;
+    switch (serverZone) {
+        case EU:
+            eventLogUrl = kAMPEventLogEuUrl;
+            break;
+        case US:
+            eventLogUrl = kAMPEventLogUrl;
+            break;
+            
+        default:
+            break;
+    }
+    return eventLogUrl;
+}
 
-- (NSMutableDictionary *_Nonnull)intercept:(NSMutableDictionary *_Nonnull)event;
-- (NSMutableDictionary *_Nullable)getCombinedInterceptedIdentify;
-- (void)transferInterceptedIdentify;
-- (BOOL)setInterceptedIdentifyUploadPeriodSeconds:(int)uploadPeriodSeconds;
-- (void)setDisabled:(BOOL)disable;
++ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone {
+    NSString *dynamicConfigUrl = kAMPDyanmicConfigUrl;
+    switch (serverZone) {
+        case EU:
+            dynamicConfigUrl = kAMPDyanmicConfigEuUrl;
+            break;
+        case US:
+            dynamicConfigUrl = kAMPDyanmicConfigUrl;
+            break;
+            
+        default:
+            break;
+    }
+    return dynamicConfigUrl;
+}
 
 @end

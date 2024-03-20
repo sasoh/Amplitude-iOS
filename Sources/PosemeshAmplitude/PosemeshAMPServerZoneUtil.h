@@ -1,5 +1,5 @@
 //
-//  AMPServerZoneUtil.m
+//  AMPServerZoneUtil.h
 //  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,42 +22,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AMPServerZone.h"
-#import "AMPServerZoneUtil.h"
-#import "AMPConstants.h"
+#import "PosemeshAMPServerZone.h"
 
-@implementation AMPServerZoneUtil
+@interface PosemeshAMPServerZoneUtil : NSObject
 
-+ (NSString *)getEventLogApi:(AMPServerZone)serverZone {
-    NSString *eventLogUrl = kAMPEventLogUrl;
-    switch (serverZone) {
-        case EU:
-            eventLogUrl = kAMPEventLogEuUrl;
-            break;
-        case US:
-            eventLogUrl = kAMPEventLogUrl;
-            break;
-            
-        default:
-            break;
-    }
-    return eventLogUrl;
-}
++ (NSString *)getEventLogApi:(AMPServerZone)serverZone;
 
-+ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone {
-    NSString *dynamicConfigUrl = kAMPDyanmicConfigUrl;
-    switch (serverZone) {
-        case EU:
-            dynamicConfigUrl = kAMPDyanmicConfigEuUrl;
-            break;
-        case US:
-            dynamicConfigUrl = kAMPDyanmicConfigUrl;
-            break;
-            
-        default:
-            break;
-    }
-    return dynamicConfigUrl;
-}
++ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone;
 
 @end

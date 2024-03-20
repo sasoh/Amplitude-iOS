@@ -283,7 +283,7 @@
 }
 
 - (void)testSkipSessionCheckWhenLoggingSessionEvents {
-    AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
+    PosemeshAMPDatabaseHelper *dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:1000];
     NSNumber *timestamp = [NSNumber numberWithLongLong:[date timeIntervalSince1970] * 1000];

@@ -1,6 +1,6 @@
 //
-//  AMPEventUtils.h
-//  Copyright (c) 2023 Amplitude Inc. (https://amplitude.com/)
+//  AMPConfigManager.h
+//  Copyright (c) 2020 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
-#import <UIKit/UIKit.h>
-#endif
+#import "PosemeshAMPServerZone.h"
 
-@interface AMPEventUtils : NSObject
+NS_ASSUME_NONNULL_BEGIN
 
-+ (NSString *_Nullable)getUserId:(NSDictionary *_Nonnull)event;
-+ (NSString *_Nullable)getDeviceId:(NSDictionary *_Nonnull)event;
-+ (long long)getEventId:(NSDictionary *_Nonnull)event;
-+ (NSString *_Nullable)getEventType:(NSDictionary *_Nonnull)event;
-+ (NSMutableDictionary *_Nullable)getGroups:(NSDictionary *_Nonnull)event;
-+ (NSMutableDictionary *_Nonnull)getUserProperties:(NSDictionary *_Nonnull)event;
-+ (void)setUserProperties:(NSMutableDictionary *_Nonnull)event userProperties:(NSMutableDictionary *_Nonnull)userProperties;
-+ (BOOL)hasLowerSequenceNumber:(NSDictionary *_Nonnull)event comparedTo:(NSDictionary *_Nonnull)otherEvent;
-+ (NSString *_Nullable)getJsonString:(NSDictionary *_Nonnull)event eventType:(NSString *_Nonnull)eventType error:(NSError * _Nullable * _Nullable)error;
+@interface PosemeshAMPConfigManager : NSObject
+
+@property (nonatomic, strong, readonly) NSString *ingestionEndpoint;
+
++ (instancetype)sharedInstance;
+- (void)refresh:(void(^)(void))completionHandler serverZone:(AMPServerZone)serverZone;
 
 @end
+
+NS_ASSUME_NONNULL_END

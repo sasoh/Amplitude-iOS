@@ -22,12 +22,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AMPIdentify.h"
-#import "AMPRevenue.h"
-#import "AMPTrackingOptions.h"
-#import "AMPPlan.h"
-#import "AMPIngestionMetadata.h"
-#import "AMPServerZone.h"
+#import "PosemeshAMPIdentify.h"
+#import "PosemeshAMPRevenue.h"
+#import "PosemeshAMPTrackingOptions.h"
+#import "PosemeshAMPPlan.h"
+#import "PosemeshAMPIngestionMetadata.h"
+#import "PosemeshAMPServerZone.h"
 #import "AMPMiddleware.h"
 #import "AMPDefaultTrackingOptions.h"
 
@@ -457,7 +457,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  @see [Tracking Revenue](https://github.com/amplitude/Amplitude-iOS#tracking-revenue)
  */
-- (void)logRevenueV2:(AMPRevenue *)revenue;
+- (void)logRevenueV2:(PosemeshAMPRevenue *)revenue;
 
 /**-----------------------------------------------------------------------------
  * @name User Properties and User Property Operations
@@ -481,7 +481,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  */
 
-- (void)identify:(AMPIdentify *)identify;
+- (void)identify:(PosemeshAMPIdentify *)identify;
 
 /**
  Update user properties using operations provided via Identify API. If outOfSession is `YES` then the identify event is logged with a session id of -1 and does not trigger any session-handling logic.
@@ -501,7 +501,7 @@ typedef void (^AMPInitCompletionBlock)(void);
 
  */
 
-- (void)identify:(AMPIdentify *)identify outOfSession:(BOOL)outOfSession;
+- (void)identify:(PosemeshAMPIdentify *)identify outOfSession:(BOOL)outOfSession;
 
 /**
 
@@ -557,11 +557,11 @@ typedef void (^AMPInitCompletionBlock)(void);
 
 - (void)groupIdentifyWithGroupType:(NSString *)groupType
                          groupName:(NSObject *)groupName
-                     groupIdentify:(AMPIdentify *)groupIdentify;
+                     groupIdentify:(PosemeshAMPIdentify *)groupIdentify;
 
 - (void)groupIdentifyWithGroupType:(NSString *)groupType
                          groupName:(NSObject *)groupName
-                     groupIdentify:(AMPIdentify *)groupIdentify
+                     groupIdentify:(PosemeshAMPIdentify *)groupIdentify
                       outOfSession:(BOOL)outOfSession;
 
 /**-----------------------------------------------------------------------------
@@ -647,7 +647,7 @@ typedef void (^AMPInitCompletionBlock)(void);
       AMPTrackingOptions *options = [[[[AMPTrackingOptions options] disableCity] disableIPAddress] disablePlatform];
       [[Amplitude instance] setTrackingOptions:options];
  */
-- (void)setTrackingOptions:(AMPTrackingOptions *)options;
+- (void)setTrackingOptions:(PosemeshAMPTrackingOptions *)options;
 
 /**
  Enable COPPA (Children's Online Privacy Protection Act) restrictions on IDFA, IDFV, city, IP address and location tracking.
@@ -675,9 +675,9 @@ typedef void (^AMPInitCompletionBlock)(void);
 
 - (void)setBearerToken:(NSString *)token;
 
-- (void)setPlan:(AMPPlan *)plan;
+- (void)setPlan:(PosemeshAMPPlan *)plan;
 
-- (void)setIngestionMetadata:(AMPIngestionMetadata *)ingestionMetadata;
+- (void)setIngestionMetadata:(PosemeshAMPIngestionMetadata *)ingestionMetadata;
 
 /**
  * Set Amplitude Server Zone, switch to zone related configuration, including dynamic configuration and server url.

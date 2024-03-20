@@ -19,7 +19,7 @@
 #import "Amplitude+Test.h"
 #import "BaseTestCase.h"
 #import "AMPConstants.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
 @interface SetupTests : BaseTestCase
 
@@ -89,7 +89,7 @@
 
 - (void)testUserPropertiesSet {
     [self.amplitude initializeApiKey:apiKey];
-    AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
+    PosemeshAMPDatabaseHelper *dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
     XCTAssertEqual([dbHelper getEventCount], 0);
 
     NSDictionary *properties = @{
@@ -114,7 +114,7 @@
 }
 
 - (void)testSetDeviceId {
-    AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
+    PosemeshAMPDatabaseHelper *dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
     NSString *initialDeviceId = [self.amplitude getDeviceId];
     XCTAssertNil(initialDeviceId);  // device id not initialized yet
 
@@ -153,7 +153,7 @@
     XCTAssertEqualObjects([self.amplitude getDeviceId], generatedDeviceId);
     XCTAssertEqualObjects([dbHelper getValue:@"device_id"], generatedDeviceId);
 
-    NSString *validDeviceId = [AMPUtils generateUUID];
+    NSString *validDeviceId = [PosemeshAMPUtils generateUUID];
     [self.amplitude setDeviceId:validDeviceId];
     [self.amplitude flushQueue];
     XCTAssertEqualObjects([self.amplitude getDeviceId], validDeviceId);

@@ -30,8 +30,8 @@
  */
 typedef NS_ENUM(NSInteger, AMPServerZone);
 
-#ifndef AMPServerZone_h
-#define AMPServerZone_h
+#ifndef PosemeshAMPServerZone_h
+#define PosemeshAMPServerZone_h
 typedef NS_ENUM(NSInteger, AMPServerZone) {
     US,
     EU

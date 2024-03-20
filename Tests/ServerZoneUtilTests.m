@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "AMPServerZone.h"
-#import "AMPServerZoneUtil.h"
+#import "PosemeshAMPServerZoneUtil.h"
 #import "AMPConstants.h"
 
 @interface ServerZoneUtilTests : XCTestCase
@@ -18,13 +18,13 @@
 @implementation ServerZoneUtilTests { }
 
 - (void) testGetEventLogApi {
-    XCTAssertEqualObjects(kAMPEventLogUrl, [AMPServerZoneUtil getEventLogApi:US]);
-    XCTAssertEqualObjects(kAMPEventLogEuUrl, [AMPServerZoneUtil getEventLogApi:EU]);
+    XCTAssertEqualObjects(kAMPEventLogUrl, [PosemeshAMPServerZoneUtil getEventLogApi:US]);
+    XCTAssertEqualObjects(kAMPEventLogEuUrl, [PosemeshAMPServerZoneUtil getEventLogApi:EU]);
 }
 
 - (void) testGetDynamicConfigApi {
-    XCTAssertEqualObjects(kAMPDyanmicConfigUrl, [AMPServerZoneUtil getDynamicConfigApi:US]);
-    XCTAssertEqualObjects(kAMPDyanmicConfigEuUrl, [AMPServerZoneUtil getDynamicConfigApi:EU]);
+    XCTAssertEqualObjects(kAMPDyanmicConfigUrl, [PosemeshAMPServerZoneUtil getDynamicConfigApi:US]);
+    XCTAssertEqualObjects(kAMPDyanmicConfigEuUrl, [PosemeshAMPServerZoneUtil getDynamicConfigApi:EU]);
 }
 
 @end

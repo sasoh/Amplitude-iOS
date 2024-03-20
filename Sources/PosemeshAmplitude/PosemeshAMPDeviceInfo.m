@@ -22,8 +22,8 @@
 //
 
 #import "AMPConstants.h"
-#import "AMPDeviceInfo.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPDeviceInfo.h"
+#import "PosemeshAMPUtils.h"
 
 #import <sys/sysctl.h>
 #import <sys/types.h>
@@ -46,10 +46,10 @@
 #endif
 #endif
 
-@interface AMPDeviceInfo ()
+@interface PosemeshAMPDeviceInfo ()
 @end
 
-@implementation AMPDeviceInfo {
+@implementation PosemeshAMPDeviceInfo {
     NSObject *networkInfo;
 }
 
@@ -95,7 +95,7 @@
 
 - (NSString *)model {
     if (!_model) {
-        _model = [AMPDeviceInfo getDeviceModel];
+        _model = [PosemeshAMPDeviceInfo getDeviceModel];
     }
     return _model;
 }
@@ -168,7 +168,7 @@
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
 #endif
-            NSString *identifierForVendor = [AMPDeviceInfo getVendorID:5];
+            NSString *identifierForVendor = [PosemeshAMPDeviceInfo getVendorID:5];
             if (identifierForVendor != nil &&
                 ![identifierForVendor isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
                 _vendorID = identifierForVendor;
@@ -197,7 +197,7 @@
     if (identifier == nil && maxAttempts > 0) {
         // Try again every 5 seconds
         [NSThread sleepForTimeInterval:5.0];
-        return [AMPDeviceInfo getVendorID:maxAttempts - 1];
+        return [PosemeshAMPDeviceInfo getVendorID:maxAttempts - 1];
     } else {
         return identifier;
     }
@@ -205,7 +205,7 @@
 
 + (NSString *)generateUUID {
     // Add "R" at the end of the ID to distinguish it from advertiserId
-    NSString *result = [[AMPUtils generateUUID] stringByAppendingString:@"R"];
+    NSString *result = [[PosemeshAMPUtils generateUUID] stringByAppendingString:@"R"];
     return result;
 }
 

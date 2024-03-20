@@ -21,18 +21,18 @@
 //  THE SOFTWARE.
 //
 
-#import "AMPConfigManager.h"
+#import "PosemeshAMPConfigManager.h"
 #import "AMPConstants.h"
-#import "AMPServerZone.h"
-#import "AMPServerZoneUtil.h"
+#import "PosemeshAMPServerZone.h"
+#import "PosemeshAMPServerZoneUtil.h"
 
-@interface AMPConfigManager ()
+@interface PosemeshAMPConfigManager ()
 
 @property (nonatomic, strong, readwrite) NSString *ingestionEndpoint;
 
 @end
 
-@implementation AMPConfigManager
+@implementation PosemeshAMPConfigManager
 
 + (instancetype)sharedInstance {
     static id instance;
@@ -51,7 +51,7 @@
 }
 
 - (void)refresh:(void(^)(void))completionHandler serverZone:(AMPServerZone)serverZone {
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[AMPServerZoneUtil getDynamicConfigApi:serverZone]]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[PosemeshAMPServerZoneUtil getDynamicConfigApi:serverZone]]];
 
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request

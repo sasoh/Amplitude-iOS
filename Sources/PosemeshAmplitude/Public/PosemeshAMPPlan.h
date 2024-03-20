@@ -1,6 +1,6 @@
 //
-//  AMPUtils.h
-//  Copyright (c) 2015 Amplitude Inc. (https://amplitude.com/)
+//  AMPPlan.h
+//  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -20,31 +20,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-
 #import <Foundation/Foundation.h>
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
-#import <UIKit/UIKit.h>
-#endif
 
-@interface AMPUtils : NSObject
+@interface PosemeshAMPPlan : NSObject
 
-+ (NSString *)generateUUID;
-+ (id)makeJSONSerializable:(id)obj;
-+ (NSMutableDictionary *)addNonNilEntriesToDictionary:(NSMutableDictionary *)destination fromDictionary:(NSDictionary *)source;
-+ (BOOL)isEmptyString:(NSString *)str;
-+ (NSDictionary *)validateGroups:(NSDictionary *)obj;
-+ (NSString *)platformDataDirectory;
-+ (NSDictionary<NSString *, NSString *> *)getEnvironment;
-+ (BOOL)isSandboxEnabled;
+@property (nonatomic, strong, readonly) NSString *branch;
 
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
-+ (UIApplication *)getSharedApplication;
-#endif
+@property (nonatomic, strong, readonly) NSString *source;
 
-#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
-+ (NSInteger)barBottomOffset;
-+ (CGFloat)statusBarHeight;
-+ (UIWindow *)getKeyWindow;
-#endif
+@property (nonatomic, strong, readonly) NSString *version;
+
+@property (nonatomic, strong, readonly) NSString *versionId;
+
++ (instancetype)plan;
+
+- (PosemeshAMPPlan *)setBranch:(NSString *)branch;
+
+- (PosemeshAMPPlan *)setSource:(NSString *)source;
+
+- (PosemeshAMPPlan *)setVersion:(NSString *)version;
+
+- (PosemeshAMPPlan *)setVersionId:(NSString *)versionId;
+
+- (NSDictionary *)toNSDictionary;
 
 @end

@@ -34,17 +34,17 @@
 
 #import <Foundation/Foundation.h>
 #import "AMPConstants.h"
-#import "AMPUtils.h"
-#import "AMPEventUtils.h"
-#import "AMPIdentifyInterceptor.h"
-#import "AMPDatabaseHelper.h"
+#import "PosemeshAMPUtils.h"
+#import "PosemeshAMPEventUtils.h"
+#import "PosemeshAMPIdentifyInterceptor.h"
+#import "PosemeshAMPDatabaseHelper.h"
 
-@implementation AMPIdentifyInterceptor {
+@implementation PosemeshAMPIdentifyInterceptor {
     NSArray *_Nonnull _interceptOps;
     NSSet *_Nonnull _interceptOpsSet;
     BOOL _transferScheduled;
     NSOperationQueue *_Nonnull _backgroundQueue;
-    AMPDatabaseHelper *_Nonnull _dbHelper;
+    PosemeshAMPDatabaseHelper *_Nonnull _dbHelper;
     BOOL _hasIdentity;
     NSString *_Nullable _userId;
     NSString *_Nullable _deviceId;
@@ -52,7 +52,7 @@
     BOOL _disabled;
 }
 
--(id)initWithParams:(AMPDatabaseHelper *_Nonnull)dbHelper
+-(id)initWithParams:(PosemeshAMPDatabaseHelper *_Nonnull)dbHelper
     backgroundQueue:(NSOperationQueue *_Nonnull)backgroundQueue
 {
     if(self = [super init]) {
@@ -69,7 +69,7 @@
     return self;
 }
 
-+ (instancetype _Nonnull)getIdentifyInterceptor:(AMPDatabaseHelper *_Nonnull) dbHelper
++ (instancetype _Nonnull)getIdentifyInterceptor:(PosemeshAMPDatabaseHelper *_Nonnull) dbHelper
                                 backgroundQueue:(NSOperationQueue *_Nonnull)backgroundQueue
 {
     return [[self alloc] initWithParams:dbHelper backgroundQueue:backgroundQueue];
@@ -84,8 +84,8 @@
 
 // If this returns YES, the given Identify has a different `user_id` or `device_id` than previous intercepts
 - (BOOL)hasDifferentIdentity:(NSMutableDictionary *_Nonnull)event {
-    NSString *eventUserId = [AMPEventUtils getUserId:event];
-    NSString *eventDeviceId= [AMPEventUtils getDeviceId:event];
+    NSString *eventUserId = [PosemeshAMPEventUtils getUserId:event];
+    NSString *eventDeviceId= [PosemeshAMPEventUtils getDeviceId:event];
 
     @synchronized (self) {
         if (!_hasIdentity) {
@@ -122,13 +122,13 @@
         [self transferInterceptedIdentify];
     }
 
-    NSString *eventType = [AMPEventUtils getEventType:event];
-    NSMutableDictionary *userPropertyOperations = [AMPEventUtils getUserProperties:event];
+    NSString *eventType = [PosemeshAMPEventUtils getEventType:event];
+    NSMutableDictionary *userPropertyOperations = [PosemeshAMPEventUtils getUserProperties:event];
     if (eventType == IDENTIFY_EVENT) {
         // Check to intercept - "set" ops only, and not setGroup
-        if ([self hasInterceptOperationsOnly:userPropertyOperations] && [AMPEventUtils getGroups:event] == nil) {
+        if ([self hasInterceptOperationsOnly:userPropertyOperations] && [PosemeshAMPEventUtils getGroups:event] == nil) {
             NSError *error = nil;
-            NSString *eventJsonString = [AMPEventUtils getJsonString:event eventType:eventType error:&error];
+            NSString *eventJsonString = [PosemeshAMPEventUtils getJsonString:event eventType:eventType error:&error];
             // Conversion to JSON string failed, return unmodified event to try to store as a normal identify
             if (error != nil) {
                return event;
@@ -165,8 +165,8 @@
         NSString *operation = _interceptOps[opIndex];
         NSMutableDictionary *mergedOperationKVPs = [NSMutableDictionary dictionary];
 
-        [AMPUtils addNonNilEntriesToDictionary:mergedOperationKVPs fromDictionary:userPropertyOperations[operation]];
-        [AMPUtils addNonNilEntriesToDictionary:mergedOperationKVPs fromDictionary:userPropertyOperationsToMerge[operation]];
+        [PosemeshAMPUtils addNonNilEntriesToDictionary:mergedOperationKVPs fromDictionary:userPropertyOperations[operation]];
+        [PosemeshAMPUtils addNonNilEntriesToDictionary:mergedOperationKVPs fromDictionary:userPropertyOperationsToMerge[operation]];
 
         if (mergedOperationKVPs.count > 0) {
             [mergedUserProperties setValue:mergedOperationKVPs forKey:operation];
@@ -179,7 +179,7 @@
 - (void)scheduleTransfer {
     if (!_transferScheduled) {
         _transferScheduled = YES;
-        __block __weak AMPIdentifyInterceptor *weakSelf = self;
+        __block __weak PosemeshAMPIdentifyInterceptor *weakSelf = self;
         int interceptedUploadPeriodSeconds = _interceptedUploadPeriodSeconds;
         [_backgroundQueue addOperationWithBlock:^{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -193,10 +193,10 @@
 - (void)transferInterceptedIdentify {
     NSMutableDictionary *interceptedIdentify = [self getCombinedInterceptedIdentify];
     if (interceptedIdentify != nil) {
-        NSString *eventType = [AMPEventUtils getEventType:interceptedIdentify];
+        NSString *eventType = [PosemeshAMPEventUtils getEventType:interceptedIdentify];
 
         NSError *error = nil;
-        NSString *eventJsonString = [AMPEventUtils getJsonString:interceptedIdentify eventType:eventType error:&error];
+        NSString *eventJsonString = [PosemeshAMPEventUtils getJsonString:interceptedIdentify eventType:eventType error:&error];
         // Conversion to JSON string failed, return unmodified event to try to store as a normal identify
         if (error == nil) {
             // Remove pending intercepts from DB
@@ -226,19 +226,19 @@
         ? [interceptedIdentifys[0] mutableCopy]
         : nil;
     NSMutableDictionary *mergedUserProperties = (interceptedCount > 0)
-        ? [AMPEventUtils getUserProperties:combinedInterceptedIdentify]
+        ? [PosemeshAMPEventUtils getUserProperties:combinedInterceptedIdentify]
         : nil;
 
     for(int interceptedIndex = 1; interceptedIndex < interceptedCount; interceptedIndex++) {
         NSMutableDictionary *curIdentify = interceptedIdentifys[interceptedIndex];
-        NSMutableDictionary *curUserProperties = [AMPEventUtils getUserProperties:curIdentify];
+        NSMutableDictionary *curUserProperties = [PosemeshAMPEventUtils getUserProperties:curIdentify];
 
         mergedUserProperties = [self mergeUserPropertyOperations:mergedUserProperties
                                     withUserPropertiesOperations:curUserProperties];
     }
 
     if (mergedUserProperties != nil && combinedInterceptedIdentify != nil) {
-        [AMPEventUtils setUserProperties:combinedInterceptedIdentify userProperties:mergedUserProperties];
+        [PosemeshAMPEventUtils setUserProperties:combinedInterceptedIdentify userProperties:mergedUserProperties];
     }
 
     return combinedInterceptedIdentify;
@@ -258,7 +258,7 @@
     _disabled = disable;
 }
 
-- (AMPDatabaseHelper *)dbHelper {
+- (PosemeshAMPDatabaseHelper *)dbHelper {
     return _dbHelper;
 }
 

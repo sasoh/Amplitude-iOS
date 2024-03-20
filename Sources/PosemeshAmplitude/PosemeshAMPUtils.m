@@ -33,12 +33,12 @@
 #endif
 #endif
 
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
-@interface AMPUtils ()
+@interface PosemeshAMPUtils ()
 @end
 
-@implementation AMPUtils
+@implementation PosemeshAMPUtils
 
 + (instancetype)alloc {
     // Util class cannot be instantiated.
@@ -184,14 +184,14 @@
 + (CGFloat)statusBarHeight {
     CGSize statusBarSize;
     if (@available(iOS 13.0, *)) {
-        statusBarSize = [[[[AMPUtils getKeyWindow] windowScene] statusBarManager] statusBarFrame].size;
+        statusBarSize = [[[[PosemeshAMPUtils getKeyWindow] windowScene] statusBarManager] statusBarFrame].size;
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         // Even with the availability check above, Xcode would still emit a deprecation warning here.
         // Since there's no way that it could be reached on iOS's >= 13.0
         // (where `[UIApplication statusBarFrame]` was deprecated), we simply ignore the warning.
-        statusBarSize = [[AMPUtils getSharedApplication] statusBarFrame].size;
+        statusBarSize = [[PosemeshAMPUtils getSharedApplication] statusBarFrame].size;
 #pragma clang diagnostic pop
     }
     return MIN(statusBarSize.width, statusBarSize.height);
@@ -199,7 +199,7 @@
 
 + (UIWindow *)getKeyWindow {
     if (@available(iOS 13.0, *)) {
-        for (UIWindowScene *windowScene in [[AMPUtils getSharedApplication] connectedScenes]) {
+        for (UIWindowScene *windowScene in [[PosemeshAMPUtils getSharedApplication] connectedScenes]) {
             for (UIWindow *window in [windowScene windows]) {
                 if ([window isKeyWindow]) {
                     return window;
@@ -213,7 +213,7 @@
         // Even with the availability check above, Xcode would still emit a deprecation warning here.
         // Since there's no way that it could be reached on iOS's >= 13.0
         // (where `[UIApplication keyWindow]` was deprecated), we simply ignore the warning.
-        return [[AMPUtils getSharedApplication] keyWindow];
+        return [[PosemeshAMPUtils getSharedApplication] keyWindow];
 #pragma clang diagnostic pop
     }
 }

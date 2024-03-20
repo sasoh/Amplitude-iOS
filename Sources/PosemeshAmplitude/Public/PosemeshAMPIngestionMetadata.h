@@ -22,7 +22,7 @@
 //
 #import <Foundation/Foundation.h>
 
-@interface AMPIngestionMetadata : NSObject
+@interface PosemeshAMPIngestionMetadata : NSObject
 
 @property (nonatomic, strong, readonly) NSString *sourceName;
 
@@ -30,9 +30,9 @@
 
 + (instancetype)ingestionMetadata;
 
-- (AMPIngestionMetadata *)setSourceName:(NSString *)sourceName;
+- (PosemeshAMPIngestionMetadata *)setSourceName:(NSString *)sourceName;
 
-- (AMPIngestionMetadata *)setSourceVersion:(NSString *)sourceVersion;
+- (PosemeshAMPIngestionMetadata *)setSourceVersion:(NSString *)sourceVersion;
 
 - (NSDictionary *)toNSDictionary;
 

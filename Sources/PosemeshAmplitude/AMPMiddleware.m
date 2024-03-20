@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 #import "AMPMiddleware.h"
 
-@implementation AMPMiddlewarePayload
+@implementation PosemeshAMPMiddlewarePayload
 
 - (instancetype _Nonnull)initWithEvent:(NSMutableDictionary *_Nonnull) event withExtra:(NSMutableDictionary *_Nullable) extra {
     if ((self = [super init])) {
@@ -36,7 +36,7 @@
 
 @end
 
-@implementation AMPBlockMiddleware
+@implementation PosemeshAMPBlockMiddleware
 
 - (instancetype _Nonnull)initWithBlock:(AMPMiddlewareBlock)block {
     if (self = [super init]) {
@@ -45,7 +45,7 @@
     return self;
 }
 
-- (void)run:(AMPMiddlewarePayload *)payload next:(AMPMiddlewareNext)next {
+- (void)run:(PosemeshAMPMiddlewarePayload *)payload next:(AMPMiddlewareNext)next {
     self.block(payload, next);
 }
 

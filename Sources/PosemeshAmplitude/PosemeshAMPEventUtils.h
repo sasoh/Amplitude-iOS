@@ -1,6 +1,6 @@
 //
-//  AMPMiddlewareRunner.h
-//  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
+//  AMPEventUtils.h
+//  Copyright (c) 2023 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +20,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+
 #import <Foundation/Foundation.h>
-#import "AMPMiddleware.h"
+#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#import <UIKit/UIKit.h>
+#endif
 
-@interface AMPMiddlewareRunner : NSObject
+@interface PosemeshAMPEventUtils : NSObject
 
-@property (nonatomic, nonnull, readonly) NSMutableArray<id<AMPMiddleware>> *middlewares;
-
-+ (instancetype _Nonnull)middleRunner;
-
-- (void) add:(id<AMPMiddleware> _Nonnull)middleware;
-
-- (void) run:(AMPMiddlewarePayload *_Nonnull)payload next:(AMPMiddlewareNext _Nonnull)next;
++ (NSString *_Nullable)getUserId:(NSDictionary *_Nonnull)event;
++ (NSString *_Nullable)getDeviceId:(NSDictionary *_Nonnull)event;
++ (long long)getEventId:(NSDictionary *_Nonnull)event;
++ (NSString *_Nullable)getEventType:(NSDictionary *_Nonnull)event;
++ (NSMutableDictionary *_Nullable)getGroups:(NSDictionary *_Nonnull)event;
++ (NSMutableDictionary *_Nonnull)getUserProperties:(NSDictionary *_Nonnull)event;
++ (void)setUserProperties:(NSMutableDictionary *_Nonnull)event userProperties:(NSMutableDictionary *_Nonnull)userProperties;
++ (BOOL)hasLowerSequenceNumber:(NSDictionary *_Nonnull)event comparedTo:(NSDictionary *_Nonnull)otherEvent;
++ (NSString *_Nullable)getJsonString:(NSDictionary *_Nonnull)event eventType:(NSString *_Nonnull)eventType error:(NSError * _Nullable * _Nullable)error;
 
 @end

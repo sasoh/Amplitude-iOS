@@ -50,22 +50,22 @@
 #import "AmplitudePrivate.h"
 #import "AMPBackgroundNotifier.h"
 #import "AMPConstants.h"
-#import "AMPConfigManager.h"
-#import "AMPDeviceInfo.h"
+#import "PosemeshAMPConfigManager.h"
+#import "PosemeshAMPDeviceInfo.h"
 #import "AMPURLSession.h"
-#import "AMPDatabaseHelper.h"
-#import "AMPUtils.h"
-#import "AMPIdentify.h"
-#import "AMPRevenue.h"
-#import "AMPTrackingOptions.h"
-#import "AMPPlan.h"
-#import "AMPIngestionMetadata.h"
-#import "AMPServerZone.h"
-#import "AMPServerZoneUtil.h"
+#import "PosemeshAMPDatabaseHelper.h"
+#import "PosemeshAMPUtils.h"
+#import "PosemeshAMPIdentify.h"
+#import "PosemeshAMPRevenue.h"
+#import "PosemeshAMPTrackingOptions.h"
+#import "PosemeshAMPPlan.h"
+#import "PosemeshAMPIngestionMetadata.h"
+#import "PosemeshAMPServerZone.h"
+#import "PosemeshAMPServerZoneUtil.h"
 #import "AMPMiddleware.h"
-#import "AMPMiddlewareRunner.h"
-#import "AMPIdentifyInterceptor.h"
-#import "AMPEventUtils.h"
+#import "PosemeshAMPMiddlewareRunner.h"
+#import "PosemeshAMPIdentifyInterceptor.h"
+#import "PosemeshAMPEventUtils.h"
 
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
 #import "UIViewController+AMPScreen.h"
@@ -94,8 +94,8 @@
 
 @property (nonatomic, strong) NSOperationQueue *backgroundQueue;
 @property (nonatomic, strong) NSOperationQueue *initializerQueue;
-@property (nonatomic, strong) AMPDatabaseHelper *dbHelper;
-@property (nonatomic, strong) AMPIdentifyInterceptor *identifyInterceptor;
+@property (nonatomic, strong) PosemeshAMPDatabaseHelper *dbHelper;
+@property (nonatomic, strong) PosemeshAMPIdentifyInterceptor *identifyInterceptor;
 @property (nonatomic, assign) BOOL initialized;
 @property (nonatomic, assign) BOOL sslPinningEnabled;
 @property (nonatomic, assign) long long sessionId;
@@ -134,11 +134,11 @@ static NSString *const APP_BUILD = @"app_build";
     UIBackgroundTaskIdentifier _uploadTaskID;
 #endif
 
-    AMPDeviceInfo *_deviceInfo;
+    PosemeshAMPDeviceInfo *_deviceInfo;
     BOOL _useAdvertisingIdForDeviceId;
 
-    AMPTrackingOptions *_inputTrackingOptions;
-    AMPTrackingOptions *_appliedTrackingOptions;
+    PosemeshAMPTrackingOptions *_inputTrackingOptions;
+    PosemeshAMPTrackingOptions *_appliedTrackingOptions;
     NSDictionary *_apiPropertiesTrackingOptions;
     BOOL _coppaControlEnabled;
 
@@ -151,11 +151,11 @@ static NSString *const APP_BUILD = @"app_build";
 
     NSString *_serverUrl;
     NSString *_token;
-    AMPPlan *_plan;
-    AMPIngestionMetadata *_ingestionMetadata;
+    PosemeshAMPPlan *_plan;
+    PosemeshAMPIngestionMetadata *_ingestionMetadata;
     AMPServerZone _serverZone;
-    AMPMiddlewareRunner *_middlewareRunner;
-    AMPIdentifyInterceptor *_identifyInterceptor;
+    PosemeshAMPMiddlewareRunner *_middlewareRunner;
+    PosemeshAMPIdentifyInterceptor *_identifyInterceptor;
 }
 
 #pragma clang diagnostic push
@@ -174,7 +174,7 @@ static NSString *const APP_BUILD = @"app_build";
     });
 
     // compiler wants explicit key nil check even though AMPUtils isEmptyString already has one
-    if (instanceName == nil || [AMPUtils isEmptyString:instanceName]) {
+    if (instanceName == nil || [PosemeshAMPUtils isEmptyString:instanceName]) {
         instanceName = kAMPDefaultInstance;
     }
     instanceName = [instanceName lowercaseString];
@@ -197,7 +197,7 @@ static NSString *const APP_BUILD = @"app_build";
 }
 
 - (instancetype)initWithInstanceName:(NSString *)instanceName {
-    if ([AMPUtils isEmptyString:instanceName]) {
+    if ([PosemeshAMPUtils isEmptyString:instanceName]) {
         instanceName = kAMPDefaultInstance;
     }
     instanceName = [instanceName lowercaseString];
@@ -222,13 +222,13 @@ static NSString *const APP_BUILD = @"app_build";
         self.libraryName = kAMPLibrary;
         self.libraryVersion = kAMPVersion;
         self.contentTypeHeader = kAMPContentTypeHeader;
-        _inputTrackingOptions = [AMPTrackingOptions options];
-        _appliedTrackingOptions = [AMPTrackingOptions copyOf:_inputTrackingOptions];
+        _inputTrackingOptions = [PosemeshAMPTrackingOptions options];
+        _appliedTrackingOptions = [PosemeshAMPTrackingOptions copyOf:_inputTrackingOptions];
         _apiPropertiesTrackingOptions = [NSDictionary dictionary];
         _coppaControlEnabled = NO;
         self.instanceName = instanceName;
-        _dbHelper = [AMPDatabaseHelper getDatabaseHelper:instanceName];
-        _middlewareRunner = [AMPMiddlewareRunner middleRunner];
+        _dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper:instanceName];
+        _middlewareRunner = [PosemeshAMPMiddlewareRunner middleRunner];
 
         self.eventUploadThreshold = kAMPEventUploadThreshold;
         self.eventMaxCount = kAMPEventMaxCount;
@@ -262,7 +262,7 @@ static NSString *const APP_BUILD = @"app_build";
             self->_uploadTaskID = UIBackgroundTaskInvalid;
         #endif
 
-            NSString *eventsDataDirectory = [AMPUtils platformDataDirectory];
+            NSString *eventsDataDirectory = [PosemeshAMPUtils platformDataDirectory];
             NSString *propertyListPath = [eventsDataDirectory stringByAppendingPathComponent:@"com.amplitude.plist"];
             if (![self.instanceName isEqualToString:kAMPDefaultInstance]) {
                 propertyListPath = [NSString stringWithFormat:@"%@_%@", propertyListPath, self.instanceName]; // namespace pList with instance name
@@ -318,7 +318,7 @@ static NSString *const APP_BUILD = @"app_build";
             [self->_backgroundQueue setSuspended:NO];
         }];
 
-        _identifyInterceptor = [AMPIdentifyInterceptor getIdentifyInterceptor:_dbHelper
+        _identifyInterceptor = [PosemeshAMPIdentifyInterceptor getIdentifyInterceptor:_dbHelper
                                                               backgroundQueue:_backgroundQueue];
 
         [self addObservers];
@@ -333,7 +333,7 @@ static NSString *const APP_BUILD = @"app_build";
         return NO;
     }
 
-    AMPDatabaseHelper *defaultDbHelper = [AMPDatabaseHelper getDatabaseHelper];
+    PosemeshAMPDatabaseHelper *defaultDbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
     BOOL success = YES;
 
     // migrate events
@@ -341,13 +341,13 @@ static NSString *const APP_BUILD = @"app_build";
     for (id event in events) {
         NSError *error = nil;
         NSData *jsonData = nil;
-        jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:&error];
+        jsonData = [NSJSONSerialization dataWithJSONObject:[PosemeshAMPUtils makeJSONSerializable:event] options:0 error:&error];
         if (error != nil) {
             AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", error);
             continue;
         }
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        if ([AMPUtils isEmptyString:jsonString]) {
+        if ([PosemeshAMPUtils isEmptyString:jsonString]) {
             AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization resulted in a null string, skipping this event");
             continue;
         }
@@ -412,7 +412,7 @@ static NSString *const APP_BUILD = @"app_build";
 
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
     // mount the default events handler
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     if (app) {
         for (NSString *name in @[UIApplicationDidEnterBackgroundNotification,
                                  UIApplicationDidFinishLaunchingNotification,
@@ -524,7 +524,7 @@ static NSString *const APP_BUILD = @"app_build";
         self.apiKey = apiKey;
 
         [self runOnBackgroundQueue:^{
-            self->_deviceInfo = [[AMPDeviceInfo alloc] init];
+            self->_deviceInfo = [[PosemeshAMPDeviceInfo alloc] init];
             [self initializeDeviceId];
             if (setUserId) {
                 [self setUserId:userId];
@@ -559,7 +559,7 @@ static NSString *const APP_BUILD = @"app_build";
     // UIApplication methods are only allowed on the main thread so need to dispatch this synchronously to the main thread.
     void (^checkInForeground)(void) = ^{
     #if !TARGET_OS_OSX && !TARGET_OS_WATCH
-        UIApplication *app = [AMPUtils getSharedApplication];
+        UIApplication *app = [PosemeshAMPUtils getSharedApplication];
         if (app != nil) {
             UIApplicationState state = app.applicationState;
             if (state != UIApplicationStateBackground) {
@@ -697,21 +697,21 @@ static NSString *const APP_BUILD = @"app_build";
 
         NSMutableDictionary *event = [NSMutableDictionary dictionary];
         [event setValue:eventType forKey:@"event_type"];
-        [event setValue:[self truncate:[AMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:eventProperties]]] forKey:@"event_properties"];
+        [event setValue:[self truncate:[PosemeshAMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:eventProperties]]] forKey:@"event_properties"];
         [event setValue:[self replaceWithEmptyJSON:apiProperties] forKey:@"api_properties"];
-        [event setValue:[self truncate:[AMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:userProperties]]] forKey:@"user_properties"];
-        [event setValue:[self truncate:[AMPUtils validateGroups:[self replaceWithEmptyJSON:groups]]] forKey:@"groups"];
-        [event setValue:[self truncate:[AMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:groupProperties]]] forKey:@"group_properties"];
+        [event setValue:[self truncate:[PosemeshAMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:userProperties]]] forKey:@"user_properties"];
+        [event setValue:[self truncate:[PosemeshAMPUtils validateGroups:[self replaceWithEmptyJSON:groups]]] forKey:@"groups"];
+        [event setValue:[self truncate:[PosemeshAMPUtils makeJSONSerializable:[self replaceWithEmptyJSON:groupProperties]]] forKey:@"group_properties"];
         [event setValue:[NSNumber numberWithLongLong:outOfSession ? -1 : self->_sessionId] forKey:@"session_id"];
         [event setValue:timestamp forKey:@"timestamp"];
 
         [self annotateEvent:event];
 
-        AMPMiddlewarePayload * middlewarePayload = [[AMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
+        PosemeshAMPMiddlewarePayload * middlewarePayload = [[PosemeshAMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
 
         __block BOOL middlewareCompleted = NO;
 
-        [self->_middlewareRunner run:middlewarePayload next:^(AMPMiddlewarePayload *_Nullable newPayload){
+        [self->_middlewareRunner run:middlewarePayload next:^(PosemeshAMPMiddlewarePayload *_Nullable newPayload){
             middlewareCompleted = YES;
         }];
 
@@ -730,13 +730,13 @@ static NSString *const APP_BUILD = @"app_build";
         if ([event count] != 0) {
             // convert event dictionary to JSON String
             NSError *error = nil;
-            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:&error];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[PosemeshAMPUtils makeJSONSerializable:event] options:0 error:&error];
             if (error != nil) {
                 AMPLITUDE_ERROR(@"ERROR: could not JSONSerialize event type %@: %@", eventType, error);
                 return;
             }
             NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-            if ([AMPUtils isEmptyString:jsonString]) {
+            if ([PosemeshAMPUtils isEmptyString:jsonString]) {
                 AMPLITUDE_ERROR(@"ERROR: JSONSerializing event type %@ resulted in an NULL string", eventType);
                 return;
             }
@@ -812,7 +812,7 @@ static NSString *const APP_BUILD = @"app_build";
         @"version": self.libraryVersion == nil ? kAMPUnknownVersion : self.libraryVersion
     };
     [event setValue:library forKey:@"library"];
-    [event setValue:[AMPUtils generateUUID] forKey:@"uuid"];
+    [event setValue:[PosemeshAMPUtils generateUUID] forKey:@"uuid"];
     [event setValue:[NSNumber numberWithLongLong:[self.dbHelper getNextSequenceNumber]] forKey:@"sequence_number"];
 
     if (_plan) {
@@ -889,7 +889,7 @@ static NSString *const APP_BUILD = @"app_build";
     [self logEvent:kAMPRevenueEvent withEventProperties:nil withApiProperties:apiProperties withUserProperties:nil withGroups:nil withGroupProperties:nil withTimestamp:nil outOfSession:NO];
 }
 
-- (void)logRevenueV2:(AMPRevenue *)revenue {
+- (void)logRevenueV2:(PosemeshAMPRevenue *)revenue {
     if (self.apiKey == nil) {
         AMPLITUDE_ERROR(@"ERROR: apiKey cannot be nil or empty, set apiKey with initializeApiKey: before calling logRevenueV2");
         return;
@@ -1007,7 +1007,7 @@ static NSString *const APP_BUILD = @"app_build";
         }
 
         NSString *eventsString = [[NSString alloc] initWithData:eventsDataLocal encoding:NSUTF8StringEncoding];
-        if ([AMPUtils isEmptyString:eventsString]) {
+        if ([PosemeshAMPUtils isEmptyString:eventsString]) {
             AMPLITUDE_ERROR(@"ERROR: JSONSerialization of event upload data resulted in a NULL string");
             self->_updatingCurrently = NO;
             [self endBackgroundTaskIfNeeded];
@@ -1021,12 +1021,12 @@ static NSString *const APP_BUILD = @"app_build";
 - (void)refreshDynamicConfig {
     if (self.useDynamicConfig) {
         __block __weak PosemeshAmplitude *weakSelf = self;
-        [[AMPConfigManager sharedInstance] refresh:^{
+        [[PosemeshAMPConfigManager sharedInstance] refresh:^{
             __block __strong PosemeshAmplitude *strongSelf = weakSelf;
             if (strongSelf == nil) {
                 return;
             }
-            strongSelf->_serverUrl = [AMPConfigManager sharedInstance].ingestionEndpoint;
+            strongSelf->_serverUrl = [PosemeshAMPConfigManager sharedInstance].ingestionEndpoint;
         } serverZone:_serverZone];
     }
 }
@@ -1057,26 +1057,26 @@ static NSString *const APP_BUILD = @"app_build";
         if (noIdentifies) {
             event = events[0];
             [events removeObjectAtIndex:0];
-            maxEventId = [AMPEventUtils getEventId:event];
+            maxEventId = [PosemeshAMPEventUtils getEventId:event];
 
         // case 2: no events grab from identifys
         } else if (noEvents) {
             identify = identifys[0];
             [identifys removeObjectAtIndex:0];
-            maxIdentifyId = [AMPEventUtils getEventId:identify];
+            maxIdentifyId = [PosemeshAMPEventUtils getEventId:identify];
 
         // case 3: need to compare sequence numbers
         } else {
             // events logged before v3.2.0 won't have sequeunce number, put those first
             event = events[0];
             identify = identifys[0];
-            if ([AMPEventUtils hasLowerSequenceNumber:event comparedTo:identify]) {
+            if ([PosemeshAMPEventUtils hasLowerSequenceNumber:event comparedTo:identify]) {
                 [events removeObjectAtIndex:0];
-                maxEventId = [AMPEventUtils getEventId:event];
+                maxEventId = [PosemeshAMPEventUtils getEventId:event];
                 identify = nil;
             } else {
                 [identifys removeObjectAtIndex:0];
-                maxIdentifyId = [AMPEventUtils getEventId:identify];
+                maxIdentifyId = [PosemeshAMPEventUtils getEventId:identify];
                 event = nil;
             }
         }
@@ -1192,7 +1192,7 @@ static NSString *const APP_BUILD = @"app_build";
     NSNumber *now = [NSNumber numberWithLongLong:[[self currentTime] timeIntervalSince1970] * 1000];
 
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     if (app == nil) {
         return;
     }
@@ -1214,7 +1214,7 @@ static NSString *const APP_BUILD = @"app_build";
     NSNumber *now = [NSNumber numberWithLongLong:[[self currentTime] timeIntervalSince1970] * 1000];
 
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     if (app == nil) {
         return;
     }
@@ -1236,7 +1236,7 @@ static NSString *const APP_BUILD = @"app_build";
 - (void)endBackgroundTaskIfNeeded {
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
     if (_uploadTaskID != UIBackgroundTaskInvalid) {
-        UIApplication *app = [AMPUtils getSharedApplication];
+        UIApplication *app = [PosemeshAMPUtils getSharedApplication];
         if (app == nil) {
             return;
         }
@@ -1371,22 +1371,22 @@ static NSString *const APP_BUILD = @"app_build";
     return [self.dbHelper getLongValue:PREVIOUS_SESSION_TIME];
 }
 
-- (void)identify:(AMPIdentify *)identify {
+- (void)identify:(PosemeshAMPIdentify *)identify {
     [self identify:identify outOfSession:NO];
 }
 
-- (void)identify:(AMPIdentify *)identify outOfSession:(BOOL)outOfSession {
+- (void)identify:(PosemeshAMPIdentify *)identify outOfSession:(BOOL)outOfSession {
     if (identify == nil || [identify.userPropertyOperations count] == 0) {
         return;
     }
     [self logEvent:IDENTIFY_EVENT withEventProperties:nil withApiProperties:nil withUserProperties:identify.userPropertyOperations withGroups:nil withGroupProperties:nil withTimestamp:nil outOfSession:outOfSession];
 }
 
-- (void)groupIdentifyWithGroupType:(NSString *)groupType groupName:(NSObject *)groupName groupIdentify:(AMPIdentify *)groupIdentify {
+- (void)groupIdentifyWithGroupType:(NSString *)groupType groupName:(NSObject *)groupName groupIdentify:(PosemeshAMPIdentify *)groupIdentify {
     [self groupIdentifyWithGroupType:groupType groupName:groupName groupIdentify:groupIdentify outOfSession:NO];
 }
 
-- (void)groupIdentifyWithGroupType:(NSString *)groupType groupName:(NSObject *)groupName groupIdentify:(AMPIdentify *)groupIdentify outOfSession:(BOOL)outOfSession {
+- (void)groupIdentifyWithGroupType:(NSString *)groupType groupName:(NSObject *)groupName groupIdentify:(PosemeshAMPIdentify *)groupIdentify outOfSession:(BOOL)outOfSession {
     if (groupIdentify == nil || [groupIdentify.userPropertyOperations count] == 0) {
         return;
     }
@@ -1415,7 +1415,7 @@ static NSString *const APP_BUILD = @"app_build";
             return;
         }
 
-        AMPIdentify *identify = [AMPIdentify identify];
+        PosemeshAMPIdentify *identify = [PosemeshAMPIdentify identify];
         for (NSString *key in copy) {
             NSObject *value = [copy objectForKey:key];
             [identify set:key value:value];
@@ -1431,7 +1431,7 @@ static NSString *const APP_BUILD = @"app_build";
 }
 
 - (void)clearUserProperties {
-    AMPIdentify *identify = [[AMPIdentify identify] clearAll];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] clearAll];
     [self identify:identify];
 }
 
@@ -1447,21 +1447,21 @@ static NSString *const APP_BUILD = @"app_build";
     }
 
     NSMutableDictionary *groups = [NSMutableDictionary dictionaryWithObjectsAndKeys:groupName, groupType, nil];
-    AMPIdentify *identify = [[AMPIdentify identify] set:groupType value:groupName];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] set:groupType value:groupName];
     [self logEvent:IDENTIFY_EVENT withEventProperties:nil withApiProperties:nil withUserProperties:identify.userPropertyOperations withGroups:groups withGroupProperties:nil withTimestamp:nil outOfSession:NO];
 
 }
 
-- (void)setTrackingOptions:(AMPTrackingOptions *)options {
-    if (![self isArgument:options validType:[AMPTrackingOptions class] methodName:@"setTrackingOptions:"]) {
+- (void)setTrackingOptions:(PosemeshAMPTrackingOptions *)options {
+    if (![self isArgument:options validType:[PosemeshAMPTrackingOptions class] methodName:@"setTrackingOptions:"]) {
         return;
     }
 
     _inputTrackingOptions = options;
-    _appliedTrackingOptions = [AMPTrackingOptions copyOf:options];
+    _appliedTrackingOptions = [PosemeshAMPTrackingOptions copyOf:options];
 
     if (_coppaControlEnabled) {
-        [_appliedTrackingOptions mergeIn:[AMPTrackingOptions forCoppaControl]];
+        [_appliedTrackingOptions mergeIn:[PosemeshAMPTrackingOptions forCoppaControl]];
     }
 
     self->_apiPropertiesTrackingOptions = [NSDictionary dictionaryWithDictionary:[options getApiPropertiesTrackingOption]];
@@ -1469,14 +1469,14 @@ static NSString *const APP_BUILD = @"app_build";
 
 - (void)enableCoppaControl {
     _coppaControlEnabled = YES;
-    [_appliedTrackingOptions mergeIn:[AMPTrackingOptions forCoppaControl]];
+    [_appliedTrackingOptions mergeIn:[PosemeshAMPTrackingOptions forCoppaControl]];
     _apiPropertiesTrackingOptions = [_appliedTrackingOptions getApiPropertiesTrackingOption];
 }
 
 - (void)disableCoppaControl {
     _coppaControlEnabled = NO;
     // Restore it to original input.
-    _appliedTrackingOptions = [AMPTrackingOptions copyOf:_inputTrackingOptions];
+    _appliedTrackingOptions = [PosemeshAMPTrackingOptions copyOf:_inputTrackingOptions];
     _apiPropertiesTrackingOptions = [_appliedTrackingOptions getApiPropertiesTrackingOption];
 }
 
@@ -1579,7 +1579,7 @@ static NSString *const APP_BUILD = @"app_build";
 
 - (void)regenerateDeviceId {
     [self runOnBackgroundQueue:^{
-        [self setDeviceId:[AMPDeviceInfo generateUUID]];
+        [self setDeviceId:[PosemeshAMPDeviceInfo generateUUID]];
     }];
 }
 
@@ -1587,11 +1587,11 @@ static NSString *const APP_BUILD = @"app_build";
     _useAdvertisingIdForDeviceId = YES;
 }
 
-- (void)setPlan:(AMPPlan *)plan {
+- (void)setPlan:(PosemeshAMPPlan *)plan {
     _plan = plan;
 }
 
-- (void)setIngestionMetadata:(AMPIngestionMetadata *)ingestionMetadata {
+- (void)setIngestionMetadata:(PosemeshAMPIngestionMetadata *)ingestionMetadata {
     _ingestionMetadata = ingestionMetadata;
 }
 
@@ -1602,7 +1602,7 @@ static NSString *const APP_BUILD = @"app_build";
 - (void)setServerZone:(AMPServerZone)serverZone updateServerUrl:(BOOL)updateServerUrl {
     _serverZone = serverZone;
     if (updateServerUrl) {
-        [self setServerUrl:[AMPServerZoneUtil getEventLogApi:serverZone]];
+        [self setServerUrl:[PosemeshAMPServerZoneUtil getEventLogApi:serverZone]];
     }
 }
 
@@ -1670,7 +1670,7 @@ static NSString *const APP_BUILD = @"app_build";
 
     if (!deviceId) {
         // Otherwise generate random ID
-        deviceId = [AMPDeviceInfo generateUUID];
+        deviceId = [PosemeshAMPDeviceInfo generateUUID];
     }
     return [[NSString alloc] initWithString:deviceId];
 }

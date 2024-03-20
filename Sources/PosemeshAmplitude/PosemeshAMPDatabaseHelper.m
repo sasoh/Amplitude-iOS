@@ -34,12 +34,12 @@
 #endif
 
 #import <sqlite3.h>
-#import "AMPDatabaseHelper.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPDatabaseHelper.h"
+#import "PosemeshAMPUtils.h"
 #import "AMPConstants.h"
-#import "AMPEventUtils.h"
+#import "PosemeshAMPEventUtils.h"
 
-@implementation AMPDatabaseHelper {
+@implementation PosemeshAMPDatabaseHelper {
     BOOL _databaseCreated;
     sqlite3 *_database;
     dispatch_queue_t _queue;
@@ -81,27 +81,27 @@ static NSString *const GET_VALUE = @"SELECT %@, %@ FROM %@ WHERE %@ = ?;";
 
 static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
-+ (AMPDatabaseHelper *)getDatabaseHelper {
-    return [AMPDatabaseHelper getDatabaseHelper:nil];
++ (PosemeshAMPDatabaseHelper *)getDatabaseHelper {
+    return [PosemeshAMPDatabaseHelper getDatabaseHelper:nil];
 }
 
-+ (AMPDatabaseHelper *)getDatabaseHelper:(NSString *)instanceName {
++ (PosemeshAMPDatabaseHelper *)getDatabaseHelper:(NSString *)instanceName {
     static NSMutableDictionary *_instances = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _instances = [[NSMutableDictionary alloc] init];
     });
 
-    if (instanceName == nil || [AMPUtils isEmptyString:instanceName]) {
+    if (instanceName == nil || [PosemeshAMPUtils isEmptyString:instanceName]) {
         instanceName = kAMPDefaultInstance;
     }
     instanceName = [instanceName lowercaseString];
 
-    AMPDatabaseHelper *dbHelper = nil;
+    PosemeshAMPDatabaseHelper *dbHelper = nil;
     @synchronized(_instances) {
         dbHelper = [_instances objectForKey:instanceName];
         if (dbHelper == nil) {
-            dbHelper = [[AMPDatabaseHelper alloc] initWithInstanceName:instanceName];
+            dbHelper = [[PosemeshAMPDatabaseHelper alloc] initWithInstanceName:instanceName];
             [_instances setObject:dbHelper forKey:instanceName];
         }
     }
@@ -113,15 +113,15 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 }
 
 - (instancetype)initWithInstanceName:(NSString *)instanceName {
-    if ([AMPUtils isEmptyString:instanceName]) {
+    if ([PosemeshAMPUtils isEmptyString:instanceName]) {
         instanceName = kAMPDefaultInstance;
     }
     instanceName = [instanceName lowercaseString];
 
     if ((self = [super init])) {
-        NSString *databaseDirectory = [AMPUtils platformDataDirectory];
+        NSString *databaseDirectory = [PosemeshAMPUtils platformDataDirectory];
         NSString *appPathWithBundleIdenitfier = [NSString stringWithFormat:@"com.amplitude.database.%@", [[NSBundle mainBundle] bundleIdentifier]];
-        NSString *appPath = [AMPUtils isSandboxEnabled] ? @"com.amplitude.database" : appPathWithBundleIdenitfier;
+        NSString *appPath = [PosemeshAMPUtils isSandboxEnabled] ? @"com.amplitude.database" : appPathWithBundleIdenitfier;
         NSString *databasePath = [databaseDirectory stringByAppendingPathComponent:appPath];
         if (![instanceName isEqualToString:kAMPDefaultInstance]) {
             databasePath = [NSString stringWithFormat:@"%@_%@", databasePath, instanceName];
@@ -150,7 +150,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 - (BOOL)inDatabase:(void (^)(sqlite3 *db))block {
     @try {
         // check that the block doesn't isn't calling inDatabase itself, which would lead to a deadlock
-        AMPDatabaseHelper *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueKey);
+        PosemeshAMPDatabaseHelper *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueKey);
         if (currentSyncQueue == self) {
             AMPLITUDE_LOG(@"Should not call inDatabase in block passed to inDatabase");
             return NO;
@@ -186,7 +186,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 {
     @try {
         // check that the block doesn't isn't calling inDatabase itself, which would lead to a deadlock
-        AMPDatabaseHelper *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueKey);
+        PosemeshAMPDatabaseHelper *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueKey);
         if (currentSyncQueue == self) {
             AMPLITUDE_LOG(@"Should not call inDatabase in block passed to inDatabase");
             return NO;
@@ -415,7 +415,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
                 continue;
             }
             NSString *eventString = [NSString stringWithUTF8String:rawEventString];
-            if ([AMPUtils isEmptyString:eventString]) {
+            if ([PosemeshAMPUtils isEmptyString:eventString]) {
                 AMPLITUDE_LOG(@"Ignoring empty event string for event id %lld from table %@", eventId, table);
                 continue;
             }

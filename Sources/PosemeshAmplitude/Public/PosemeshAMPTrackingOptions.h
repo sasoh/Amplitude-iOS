@@ -30,26 +30,26 @@
     [[Amplitude instance] setTrackingOptions:options];
 
 */
-@interface AMPTrackingOptions : NSObject
+@interface PosemeshAMPTrackingOptions : NSObject
 
 @property (nonatomic, strong, readonly) NSMutableSet *disabledFields;
 
-- (AMPTrackingOptions *)disableCarrier;
-- (AMPTrackingOptions *)disableCity;
-- (AMPTrackingOptions *)disableCountry;
-- (AMPTrackingOptions *)disableDeviceManufacturer;
-- (AMPTrackingOptions *)disableDeviceModel;
-- (AMPTrackingOptions *)disableDMA;
-- (AMPTrackingOptions *)disableIDFA;
-- (AMPTrackingOptions *)disableIDFV;
-- (AMPTrackingOptions *)disableIPAddress;
-- (AMPTrackingOptions *)disableLanguage;
-- (AMPTrackingOptions *)disableLatLng;
-- (AMPTrackingOptions *)disableOSName;
-- (AMPTrackingOptions *)disableOSVersion;
-- (AMPTrackingOptions *)disablePlatform;
-- (AMPTrackingOptions *)disableRegion;
-- (AMPTrackingOptions *)disableVersionName;
+- (PosemeshAMPTrackingOptions *)disableCarrier;
+- (PosemeshAMPTrackingOptions *)disableCity;
+- (PosemeshAMPTrackingOptions *)disableCountry;
+- (PosemeshAMPTrackingOptions *)disableDeviceManufacturer;
+- (PosemeshAMPTrackingOptions *)disableDeviceModel;
+- (PosemeshAMPTrackingOptions *)disableDMA;
+- (PosemeshAMPTrackingOptions *)disableIDFA;
+- (PosemeshAMPTrackingOptions *)disableIDFV;
+- (PosemeshAMPTrackingOptions *)disableIPAddress;
+- (PosemeshAMPTrackingOptions *)disableLanguage;
+- (PosemeshAMPTrackingOptions *)disableLatLng;
+- (PosemeshAMPTrackingOptions *)disableOSName;
+- (PosemeshAMPTrackingOptions *)disableOSVersion;
+- (PosemeshAMPTrackingOptions *)disablePlatform;
+- (PosemeshAMPTrackingOptions *)disableRegion;
+- (PosemeshAMPTrackingOptions *)disableVersionName;
 
 - (BOOL)shouldTrackCarrier;
 - (BOOL)shouldTrackCity;
@@ -69,9 +69,9 @@
 - (BOOL)shouldTrackVersionName;
 
 - (NSMutableDictionary *)getApiPropertiesTrackingOption;
-- (AMPTrackingOptions *)mergeIn:(AMPTrackingOptions *)options;
+- (PosemeshAMPTrackingOptions *)mergeIn:(PosemeshAMPTrackingOptions *)options;
 + (instancetype)options;
-+ (AMPTrackingOptions *)forCoppaControl;
-+ (AMPTrackingOptions *)copyOf:(AMPTrackingOptions *)origin;
++ (PosemeshAMPTrackingOptions *)forCoppaControl;
++ (PosemeshAMPTrackingOptions *)copyOf:(PosemeshAMPTrackingOptions *)origin;
 
 @end

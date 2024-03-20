@@ -7,13 +7,13 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
 @interface AMPUtilTests : XCTestCase
 
 @end
 
-@interface FakeAMPUtils: AMPUtils
+@interface FakeAMPUtils: PosemeshAMPUtils
 @end
 
 @implementation FakeAMPUtils
@@ -27,7 +27,7 @@
 @implementation AMPUtilTests {}
 
 - (void) testIsSandboxEnabled {
-    BOOL isSandboxEnabled = [AMPUtils isSandboxEnabled];
+    BOOL isSandboxEnabled = [PosemeshAMPUtils isSandboxEnabled];
     #if TARGET_OS_OSX
         XCTAssertEqual(isSandboxEnabled, NO);
     #else

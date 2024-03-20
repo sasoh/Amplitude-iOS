@@ -1,13 +1,13 @@
 // All Amplitude public headers
 #import <PosemeshAmplitude/PosemeshAmplitude.h>
-#import <PosemeshAmplitude/AMPIdentify.h>
-#import <PosemeshAmplitude/AMPRevenue.h>
-#import <PosemeshAmplitude/AMPTrackingOptions.h>
+#import <PosemeshAmplitude/PosemeshAMPIdentify.h>
+#import <PosemeshAmplitude/PosemeshAMPRevenue.h>
+#import <PosemeshAmplitude/PosemeshAMPTrackingOptions.h>
 #import <PosemeshAmplitude/Amplitude+SSLPinning.h>
-#import <PosemeshAmplitude/AMPPlan.h>
-#import <PosemeshAmplitude/AMPIngestionMetadata.h>
+#import <PosemeshAmplitude/PosemeshAMPPlan.h>
+#import <PosemeshAmplitude/PosemeshAMPIngestionMetadata.h>
 #import <PosemeshAmplitude/AMPMiddleware.h>
-#import <PosemeshAmplitude/AMPServerZone.h>
+#import <PosemeshAmplitude/PosemeshAMPServerZone.h>
 #import <PosemeshAmplitude/AMPDefaultTrackingOptions.h>
 
 #if TARGET_OS_WATCH

@@ -26,7 +26,7 @@
 /**
  * AMPMiddlewarePayload
  */
-@interface AMPMiddlewarePayload: NSObject
+@interface PosemeshAMPMiddlewarePayload: NSObject
 
 @property NSMutableDictionary *_Nonnull event;
 @property NSMutableDictionary *_Nullable extra;
@@ -38,20 +38,20 @@
 /**
  * AMPMiddleware
  */
-typedef void (^AMPMiddlewareNext)(AMPMiddlewarePayload *_Nullable newPayload);
+typedef void (^AMPMiddlewareNext)(PosemeshAMPMiddlewarePayload *_Nullable newPayload);
 
 @protocol AMPMiddleware
 
-- (void)run:(AMPMiddlewarePayload *_Nonnull)payload next:(AMPMiddlewareNext _Nonnull)next;
+- (void)run:(PosemeshAMPMiddlewarePayload *_Nonnull)payload next:(AMPMiddlewareNext _Nonnull)next;
 
 @end
 
 /**
  * AMPBlockMiddleware
  */
-typedef void (^AMPMiddlewareBlock)(AMPMiddlewarePayload *_Nonnull payload, AMPMiddlewareNext _Nonnull next);
+typedef void (^AMPMiddlewareBlock)(PosemeshAMPMiddlewarePayload *_Nonnull payload, AMPMiddlewareNext _Nonnull next);
 
-@interface AMPBlockMiddleware : NSObject <AMPMiddleware>
+@interface PosemeshAMPBlockMiddleware : NSObject <AMPMiddleware>
 
 @property (nonnull, nonatomic, readonly) AMPMiddlewareBlock block;
 

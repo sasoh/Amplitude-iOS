@@ -29,11 +29,11 @@
 #endif
 #endif
 
-#import "AMPIngestionMetadata.h"
+#import "PosemeshAMPIngestionMetadata.h"
 #import "AMPConstants.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
-@implementation AMPIngestionMetadata
+@implementation PosemeshAMPIngestionMetadata
 
 /*
  * Create an AMPIngestionMetadata object
@@ -42,8 +42,8 @@
     return [[self alloc] init];
 }
 
-- (AMPIngestionMetadata *)setSourceName:(NSString *)sourceName {
-    if ([AMPUtils isEmptyString:sourceName]) {
+- (PosemeshAMPIngestionMetadata *)setSourceName:(NSString *)sourceName {
+    if ([PosemeshAMPUtils isEmptyString:sourceName]) {
         AMPLITUDE_LOG(@"Invalid empty sourceName");
         return self;
     }
@@ -52,8 +52,8 @@
     return self;
 }
 
-- (AMPIngestionMetadata *)setSourceVersion:(NSString *)sourceVersion {
-    if ([AMPUtils isEmptyString:sourceVersion]) {
+- (PosemeshAMPIngestionMetadata *)setSourceVersion:(NSString *)sourceVersion {
+    if ([PosemeshAMPUtils isEmptyString:sourceVersion]) {
         AMPLITUDE_LOG(@"Invalid empty sourceVersion");
         return self;
     }

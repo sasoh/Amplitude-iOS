@@ -12,9 +12,9 @@
 #import "AMPConstants.h"
 #import "Amplitude+Test.h"
 #import "BaseTestCase.h"
-#import "AMPDeviceInfo.h"
-#import "AMPUtils.h"
-#import "AMPEventUtils.h"
+#import "PosemeshAMPDeviceInfo.h"
+#import "PosemeshAMPUtils.h"
+#import "PosemeshAMPEventUtils.h"
 #import "AMPTrackingOptions.h"
 #import "AMPPlan.h"
 #import "AMPIngestionMetadata.h"
@@ -931,7 +931,7 @@
     AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
     [self.amplitude flushQueue];
     NSString *oldDeviceId = [self.amplitude getDeviceId];
-    XCTAssertFalse([AMPUtils isEmptyString:oldDeviceId]);
+    XCTAssertFalse([PosemeshAMPUtils isEmptyString:oldDeviceId]);
     XCTAssertEqualObjects(oldDeviceId, [dbHelper getValue:@"device_id"]);
 
     [self.amplitude regenerateDeviceId];
@@ -960,7 +960,7 @@
 
 #if TARGET_OS_IOS
 -(void)testIdfaAsDeviceId {
-    AMPTrackingOptions *opts = [AMPTrackingOptions options]; // has shouldTrackIDFA set.
+    PosemeshAMPTrackingOptions *opts = [PosemeshAMPTrackingOptions options]; // has shouldTrackIDFA set.
     AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper:@"idfa"];
     if (dbHelper != nil) {
         [dbHelper deleteDB];
@@ -983,7 +983,7 @@
 }
 
 -(void)testDisableIdfaAsDeviceId {
-    AMPTrackingOptions *options = [[AMPTrackingOptions options] disableIDFA];
+    PosemeshAMPTrackingOptions *options = [[PosemeshAMPTrackingOptions options] disableIDFA];
     AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper:@"disable_idfa"];
     if (dbHelper != nil) {
         [dbHelper deleteDB];
@@ -1015,7 +1015,7 @@
 
     PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"idfv"];
 
-    AMPDeviceInfo * deviceInfo = [[AMPDeviceInfo alloc] init];
+    PosemeshAMPDeviceInfo * deviceInfo = [[PosemeshAMPDeviceInfo alloc] init];
 
     [client flushQueueWithQueue:client.initializerQueue];
     [client initializeApiKey:@"api key"];
@@ -1025,8 +1025,8 @@
 }
 
 -(void)testDisableIdfvAsDeviceId {
-    AMPTrackingOptions *options = [[AMPTrackingOptions options] disableIDFV];
-    AMPDeviceInfo *deviceInfo = [[AMPDeviceInfo alloc] init];
+    PosemeshAMPTrackingOptions *options = [[PosemeshAMPTrackingOptions options] disableIDFV];
+    PosemeshAMPDeviceInfo *deviceInfo = [[PosemeshAMPDeviceInfo alloc] init];
 
     PosemeshAmplitude *client = [PosemeshAmplitude instanceWithName:@"disable_idfv"];
     [client flushQueueWithQueue:client.initializerQueue];
@@ -1039,7 +1039,7 @@
 }
 
 -(void)testSetTrackingConfig {
-    AMPTrackingOptions *options = [[[[[AMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage] disableCountry];
+    PosemeshAMPTrackingOptions *options = [[[[[PosemeshAMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage] disableCountry];
     [self.amplitude setTrackingOptions:options];
 
     [self.amplitude logEvent:@"test"];
@@ -1178,7 +1178,7 @@
     NSString *version = @"1.0.0";
     NSString *versionId = @"9ec23ba0-275f-468f-80d1-66b88bff9529";
 
-    AMPPlan *plan = [[[[[AMPPlan plan] setBranch:branch] setSource:source] setVersion:version] setVersionId:versionId];
+    PosemeshAMPPlan *plan = [[[[[PosemeshAMPPlan plan] setBranch:branch] setSource:source] setVersion:version] setVersionId:versionId];
     [client setPlan:plan];
     [client logEvent:@"test"];
     [client flushQueue];
@@ -1197,7 +1197,7 @@
     NSString *sourceName = @"ampli";
     NSString *sourceVersion = @"2.0.0";
 
-    AMPIngestionMetadata *ingestionMetadata = [[[AMPIngestionMetadata ingestionMetadata] setSourceName:sourceName] setSourceVersion:sourceVersion];
+    PosemeshAMPIngestionMetadata *ingestionMetadata = [[[PosemeshAMPIngestionMetadata ingestionMetadata] setSourceName:sourceName] setSourceVersion:sourceVersion];
     [client setIngestionMetadata:ingestionMetadata];
     [client logEvent:@"test"];
     [client flushQueue];
@@ -1353,13 +1353,13 @@
     XCTAssertEqual([dbHelper getIdentifyCount], 2);
 
     NSDictionary *lastIdentify = [self.amplitude getLastIdentify];
-    NSMutableDictionary *lastIdentifyUserProperties = [AMPEventUtils getUserProperties:lastIdentify];
+    NSMutableDictionary *lastIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:lastIdentify];
     NSArray *lastIdentifyUserPropertiesOperations = [lastIdentifyUserProperties allKeys];
     XCTAssertEqual(lastIdentifyUserPropertiesOperations.count, 1);
     XCTAssertTrue([lastIdentifyUserProperties[AMP_OP_ADD][@"add-key-1"] isEqualToNumber:@1]);
 
     NSDictionary *interceptedIdentify = [self.amplitude getIdentify:1];
-    NSMutableDictionary *interceptedIdentifyUserProperties = [AMPEventUtils getUserProperties:interceptedIdentify];
+    NSMutableDictionary *interceptedIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:interceptedIdentify];
     NSArray *interceptedIdentifyUserPropertiesOperations = [interceptedIdentifyUserProperties allKeys];
     XCTAssertEqual(interceptedIdentifyUserPropertiesOperations.count, 1);
     XCTAssertTrue([interceptedIdentifyUserProperties[AMP_OP_SET][@"set-key-1"] isEqualToString:@"set-value-1"]);
@@ -1379,13 +1379,13 @@
     XCTAssertEqual([dbHelper getIdentifyCount], 3);
 
     NSDictionary *lastEvent = [self.amplitude getLastEvent];
-    NSMutableDictionary *lastEventUserProperties = [AMPEventUtils getUserProperties:lastEvent];
+    NSMutableDictionary *lastEventUserProperties = [PosemeshAMPEventUtils getUserProperties:lastEvent];
     XCTAssertNotNil(lastEventUserProperties);
     NSArray *lastEventUserPropertiesOperations = [lastEventUserProperties allKeys];
     XCTAssertEqual(lastEventUserPropertiesOperations.count, 0);
 
     interceptedIdentify = [self.amplitude getLastIdentify];
-    interceptedIdentifyUserProperties = [AMPEventUtils getUserProperties:interceptedIdentify];
+    interceptedIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:interceptedIdentify];
     interceptedIdentifyUserPropertiesOperations = [interceptedIdentifyUserProperties allKeys];
     XCTAssertEqual(interceptedIdentifyUserPropertiesOperations.count, 1);
     XCTAssertTrue([interceptedIdentifyUserProperties[AMP_OP_SET][@"set-key-2"] isEqualToString:@"set-value-2"]);
@@ -1405,7 +1405,7 @@
     XCTAssertEqual([dbHelper getTotalEventCount], 5);
 
     NSDictionary *unsetIdentify = [self.amplitude getLastIdentify];
-    NSMutableDictionary *unsetIdentifyUserProperties = [AMPEventUtils getUserProperties:unsetIdentify];
+    NSMutableDictionary *unsetIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:unsetIdentify];
     NSArray *unsetIdentifyUserPropertiesOperations = [unsetIdentifyUserProperties allKeys];
 
     XCTAssertEqual(unsetIdentifyUserPropertiesOperations.count, 1);
@@ -1469,14 +1469,14 @@
     XCTAssertEqual([dbHelper getIdentifyCount], 2);
 
     NSDictionary *lastIdentify = [self.amplitude getLastIdentify];
-    NSMutableDictionary *lastIdentifyUserProperties = [AMPEventUtils getUserProperties:lastIdentify];
+    NSMutableDictionary *lastIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:lastIdentify];
     NSArray *lastIdentifyUserPropertiesOperations = [lastIdentifyUserProperties allKeys];
     XCTAssertEqual(lastIdentifyUserPropertiesOperations.count, 1);
     XCTAssertTrue([lastIdentifyUserProperties[AMP_OP_SET][@"group_type"] isEqualToString:@"group_value"]);
     XCTAssertTrue([lastIdentify[@"groups"][@"group_type"] isEqualToString:@"group_value"]);
 
     NSDictionary *interceptedIdentify = [self.amplitude getIdentify:1];
-    NSMutableDictionary *interceptedIdentifyUserProperties = [AMPEventUtils getUserProperties:interceptedIdentify];
+    NSMutableDictionary *interceptedIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:interceptedIdentify];
     NSArray *interceptedIdentifyUserPropertiesOperations = [interceptedIdentifyUserProperties allKeys];
     XCTAssertEqual(interceptedIdentifyUserPropertiesOperations.count, 1);
     XCTAssertTrue([interceptedIdentifyUserProperties[AMP_OP_SET][@"set-key-1"] isEqualToString:@"set-value-1"]);
@@ -1513,19 +1513,19 @@
 
     // verify idenitfy was transfered
     NSDictionary *lastIdentify = [self.amplitude getLastIdentify];
-    NSMutableDictionary *lastIdentifyUserProperties = [AMPEventUtils getUserProperties:lastIdentify];
+    NSMutableDictionary *lastIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:lastIdentify];
     NSArray *lastIdentifyUserPropertiesOperations = [lastIdentifyUserProperties allKeys];
 
-    XCTAssertEqualObjects([AMPEventUtils getUserId:lastIdentify], @"test-user-1");
+    XCTAssertEqualObjects([PosemeshAMPEventUtils getUserId:lastIdentify], @"test-user-1");
     XCTAssertEqual(lastIdentifyUserPropertiesOperations.count, 1);
     XCTAssertEqualObjects(lastIdentifyUserProperties[AMP_OP_SET][@"set-key-1"], @"set-value-1");
     XCTAssertEqualObjects(lastIdentifyUserProperties[AMP_OP_SET][@"set-key-2"], @"set-value-2");
 
     // verify intercepted
     NSDictionary *interceptedIdentify = [self.amplitude getLastInterceptedIdentify];
-    NSMutableDictionary *interceptedIdentifyUserProperties = [AMPEventUtils getUserProperties:interceptedIdentify];
+    NSMutableDictionary *interceptedIdentifyUserProperties = [PosemeshAMPEventUtils getUserProperties:interceptedIdentify];
     NSArray *interceptedIdentifyUserPropertiesOperations = [interceptedIdentifyUserProperties allKeys];
-    XCTAssertEqualObjects([AMPEventUtils getUserId:interceptedIdentify], @"test-user-2");
+    XCTAssertEqualObjects([PosemeshAMPEventUtils getUserId:interceptedIdentify], @"test-user-2");
     XCTAssertEqual(interceptedIdentifyUserPropertiesOperations.count, 1);
     XCTAssertEqualObjects(interceptedIdentifyUserProperties[AMP_OP_SET][@"set-key-3"], @"set-value-3");
 }
@@ -1582,7 +1582,7 @@
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center postNotificationName:UIApplicationDidFinishLaunchingNotification object:app];
     
@@ -1610,7 +1610,7 @@
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center postNotificationName:UIApplicationDidFinishLaunchingNotification object:app];
     
@@ -1639,7 +1639,7 @@
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center postNotificationName:UIApplicationWillEnterForegroundNotification object:app];
 
@@ -1660,7 +1660,7 @@
     client.defaultTracking.appLifecycles = YES;
     [client initializeApiKey:@"default_tracking"];
 
-    UIApplication *app = [AMPUtils getSharedApplication];
+    UIApplication *app = [PosemeshAMPUtils getSharedApplication];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center postNotificationName:UIApplicationDidEnterBackgroundNotification object:app];
 

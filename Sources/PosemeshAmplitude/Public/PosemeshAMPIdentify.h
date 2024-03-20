@@ -38,7 +38,7 @@
 
  See [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-@interface AMPIdentify : NSObject
+@interface PosemeshAMPIdentify : NSObject
 
 @property (nonatomic, strong, readonly) NSMutableDictionary *userPropertyOperations;
 
@@ -72,7 +72,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)add:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)add:(NSString *)property value:(NSObject *)value;
 
 /**
  Append a value or values to a user property.
@@ -87,14 +87,14 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)append:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)append:(NSString *)property value:(NSObject *)value;
 
 /*
  Internal method for clearing user properties.
 
  **Note:** $clearAll needs to be sent on its own Identify object. If there are already other operations, then don't add $clearAll. If $clearAll already in an Identify object, don't allow other operations to be added.
  */
-- (AMPIdentify *)clearAll;
+- (PosemeshAMPIdentify *)clearAll;
 
 /**
  Prepend a value or values to a user property. Prepend means inserting the value or values at the front of a list.
@@ -109,7 +109,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)prepend:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)prepend:(NSString *)property value:(NSObject *)value;
 
 /**
  Sets the value of a given user property. If the value already exists, it will be overwritten with the new value.
@@ -122,7 +122,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)set:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)set:(NSString *)property value:(NSObject *)value;
 
 
 /**
@@ -138,7 +138,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)setOnce:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)setOnce:(NSString *)property value:(NSObject *)value;
 
 
 /**
@@ -150,7 +150,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)unset:(NSString *)property;
+- (PosemeshAMPIdentify *)unset:(NSString *)property;
 
 
 /**
@@ -164,7 +164,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)preInsert:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)preInsert:(NSString *)property value:(NSObject *)value;
 
 
 /**
@@ -178,7 +178,7 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)postInsert:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)postInsert:(NSString *)property value:(NSObject *)value;
 
 
 /**
@@ -192,5 +192,5 @@
 
  @see [User Properties and User Property Operations](https://github.com/amplitude/amplitude-ios#user-properties-and-user-property-operations)
  */
-- (AMPIdentify *)remove:(NSString *)property value:(NSObject *)value;
+- (PosemeshAMPIdentify *)remove:(NSString *)property value:(NSObject *)value;
 @end

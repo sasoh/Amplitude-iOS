@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 #import "AMPMiddleware.h"
-#import "AMPMiddlewareRunner.h"
+#import "PosemeshAMPMiddlewareRunner.h"
 
 @interface MiddlewareRunnerTests : XCTestCase
 
-@property AMPMiddlewareRunner *middlewareRunner;
+@property PosemeshAMPMiddlewareRunner *middlewareRunner;
 
 @end
 
@@ -20,7 +20,7 @@
 @implementation MiddlewareRunnerTests
 
 - (void)setUp {
-    _middlewareRunner = [AMPMiddlewareRunner middleRunner];
+    _middlewareRunner = [PosemeshAMPMiddlewareRunner middleRunner];
 }
 
 - (void)tearDown {
@@ -29,12 +29,12 @@
 
 - (void)testMiddlewareRun {
     NSString *eventType = @"middleware event";
-    AMPBlockMiddleware *updateEventTypeMiddleware = [[AMPBlockMiddleware alloc] initWithBlock: ^(AMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
+    PosemeshAMPBlockMiddleware *updateEventTypeMiddleware = [[PosemeshAMPBlockMiddleware alloc] initWithBlock: ^(PosemeshAMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
         [payload.event setValue:eventType forKey:@"event_type"];
         next(payload);
     }];
     NSString *deviceModel = @"middleware_device";
-    AMPBlockMiddleware *updateDeviceModelMiddleware = [[AMPBlockMiddleware alloc] initWithBlock: ^(AMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
+    PosemeshAMPBlockMiddleware *updateDeviceModelMiddleware = [[PosemeshAMPBlockMiddleware alloc] initWithBlock: ^(PosemeshAMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
         [payload.event setValue:deviceModel forKey:@"device_model"];
         next(payload);
     }];
@@ -46,11 +46,11 @@
     [event setValue:@"sample_device" forKey:@"device_model"];
     NSMutableDictionary *extra = [NSMutableDictionary dictionary];
     
-    AMPMiddlewarePayload * middlewarePayload = [[AMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
+    PosemeshAMPMiddlewarePayload * middlewarePayload = [[PosemeshAMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
     
     __block BOOL middlewareCompleted = NO;
     
-    [_middlewareRunner run:middlewarePayload next:^(AMPMiddlewarePayload *_Nullable newPayload){
+    [_middlewareRunner run:middlewarePayload next:^(PosemeshAMPMiddlewarePayload *_Nullable newPayload){
         middlewareCompleted = YES;
     }];
     
@@ -61,11 +61,11 @@
 
 - (void)testRunWithNotPassMiddleware {
     NSString *eventType = @"middleware event";
-    AMPBlockMiddleware *updateEventTypeMiddleware = [[AMPBlockMiddleware alloc] initWithBlock: ^(AMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
+    PosemeshAMPBlockMiddleware *updateEventTypeMiddleware = [[PosemeshAMPBlockMiddleware alloc] initWithBlock: ^(PosemeshAMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
         [payload.event setValue:eventType forKey:@"event_type"];
         next(payload);
     }];
-    AMPBlockMiddleware *swallowMiddleware = [[AMPBlockMiddleware alloc] initWithBlock: ^(AMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
+    PosemeshAMPBlockMiddleware *swallowMiddleware = [[PosemeshAMPBlockMiddleware alloc] initWithBlock: ^(PosemeshAMPMiddlewarePayload * _Nonnull payload, AMPMiddlewareNext _Nonnull next) {
     }];
     [_middlewareRunner add:updateEventTypeMiddleware];
     [_middlewareRunner add:swallowMiddleware];
@@ -75,11 +75,11 @@
     [event setValue:@"sample_device" forKey:@"device_model"];
     NSMutableDictionary *extra = [NSMutableDictionary dictionary];
     
-    AMPMiddlewarePayload * middlewarePayload = [[AMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
+    PosemeshAMPMiddlewarePayload * middlewarePayload = [[PosemeshAMPMiddlewarePayload alloc] initWithEvent:event withExtra:extra];
     
     __block BOOL middlewareCompleted = NO;
     
-    [_middlewareRunner run:middlewarePayload next:^(AMPMiddlewarePayload *_Nullable newPayload){
+    [_middlewareRunner run:middlewarePayload next:^(PosemeshAMPMiddlewarePayload *_Nullable newPayload){
         middlewareCompleted = YES;
     }];
     

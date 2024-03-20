@@ -33,14 +33,14 @@
 #endif
 #endif
 
-#import "AMPIdentify.h"
+#import "PosemeshAMPIdentify.h"
 #import "AMPConstants.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
-@interface AMPIdentify ()
+@interface PosemeshAMPIdentify ()
 @end
 
-@implementation AMPIdentify {
+@implementation PosemeshAMPIdentify {
     NSMutableSet *_userProperties;
 }
 
@@ -56,7 +56,7 @@
     return [[self alloc] init];
 }
 
-- (AMPIdentify *)add:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)add:(NSString *)property value:(NSObject *)value {
     if ([value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSString class]]) {
         [self addToUserProperties:AMP_OP_ADD property:property value:value];
     } else {
@@ -65,12 +65,12 @@
     return self;
 }
 
-- (AMPIdentify *)append:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)append:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_APPEND property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)clearAll {
+- (PosemeshAMPIdentify *)clearAll {
     if ([_userPropertyOperations count] > 0) {
         if ([_userPropertyOperations objectForKey:AMP_OP_CLEAR_ALL] == nil) {
             AMPLITUDE_LOG(@"Need to send $clearAll on its own Identify object without any other operations, skipping $clearAll");
@@ -81,37 +81,37 @@
     return self;
 }
 
-- (AMPIdentify *)prepend:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)prepend:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_PREPEND property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)set:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)set:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_SET property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)setOnce:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)setOnce:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_SET_ONCE property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)unset:(NSString *)property {
+- (PosemeshAMPIdentify *)unset:(NSString *)property {
     [self addToUserProperties:AMP_OP_UNSET property:property value:@"-"];
     return self;
 }
 
-- (AMPIdentify *)preInsert:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)preInsert:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_PREINSERT property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)postInsert:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)postInsert:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_POSTINSERT property:property value:value];
     return self;
 }
 
-- (AMPIdentify *)remove:(NSString *)property value:(NSObject *)value {
+- (PosemeshAMPIdentify *)remove:(NSString *)property value:(NSObject *)value {
     [self addToUserProperties:AMP_OP_REMOVE property:property value:value];
     return self;
 }
@@ -139,7 +139,7 @@
         operations = [NSMutableDictionary dictionary];
         [_userPropertyOperations setObject:operations forKey:operation];
     }
-    [operations setObject:[AMPUtils makeJSONSerializable:value] forKey:property];
+    [operations setObject:[PosemeshAMPUtils makeJSONSerializable:value] forKey:property];
     [_userProperties addObject:property];
 }
 

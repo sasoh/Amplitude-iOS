@@ -33,15 +33,15 @@
 #endif
 #endif
 
-#import "AMPRevenue.h"
+#import "PosemeshAMPRevenue.h"
 #import "AMPConstants.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
-@interface AMPRevenue ()
+@interface PosemeshAMPRevenue ()
 
 @end
 
-@implementation AMPRevenue
+@implementation PosemeshAMPRevenue
 
 - (instancetype)init {
     if ((self = [super init])) {
@@ -65,8 +65,8 @@
     return YES;
 }
 
-- (AMPRevenue *)setProductIdentifier:(NSString *)productIdentifier {
-    if ([AMPUtils isEmptyString:productIdentifier]) {
+- (PosemeshAMPRevenue *)setProductIdentifier:(NSString *)productIdentifier {
+    if ([PosemeshAMPUtils isEmptyString:productIdentifier]) {
         AMPLITUDE_LOG(@"Invalid empty productIdentifier");
         return self;
     }
@@ -75,27 +75,27 @@
     return self;
 }
 
-- (AMPRevenue *)setQuantity:(NSInteger)quantity {
+- (PosemeshAMPRevenue *)setQuantity:(NSInteger)quantity {
     _quantity = quantity;
     return self;
 }
 
-- (AMPRevenue *)setPrice:(NSNumber *)price {
+- (PosemeshAMPRevenue *)setPrice:(NSNumber *)price {
     _price = price;
     return self;
 }
 
-- (AMPRevenue *)setRevenueType:(NSString *)revenueType {
+- (PosemeshAMPRevenue *)setRevenueType:(NSString *)revenueType {
     _revenueType = revenueType;
     return self;
 }
 
-- (AMPRevenue *)setReceipt:(NSData *)receipt {
+- (PosemeshAMPRevenue *)setReceipt:(NSData *)receipt {
     _receipt = receipt;
     return self;
 }
 
-- (AMPRevenue *)setEventProperties:(NSDictionary *)eventProperties {
+- (PosemeshAMPRevenue *)setEventProperties:(NSDictionary *)eventProperties {
     eventProperties = [eventProperties copy];
     _properties = eventProperties;
     return self;

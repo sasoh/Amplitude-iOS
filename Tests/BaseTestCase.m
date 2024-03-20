@@ -11,7 +11,7 @@
 #import "Amplitude+SSLPinning.h"
 #import "Amplitude+Test.h"
 #import "BaseTestCase.h"
-#import "AMPDatabaseHelper.h"
+#import "PosemeshAMPDatabaseHelper.h"
 
 NSString *const apiKey = @"000000";
 NSString *const userId = @"userId";
@@ -23,11 +23,11 @@ NSString *const userId = @"userId";
 - (void)setUp {
     [super setUp];
     self.amplitude = [PosemeshAmplitude alloc];
-    self.databaseHelper = [AMPDatabaseHelper getDatabaseHelper];
+    self.databaseHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
     XCTAssertTrue([self.databaseHelper resetDB:NO]);
 
     [self.amplitude init];
-    AMPTrackingOptions *opts = [AMPTrackingOptions options];
+    PosemeshAMPTrackingOptions *opts = [PosemeshAMPTrackingOptions options];
     XCTAssertTrue([opts shouldTrackIDFA]);
     [self.amplitude setTrackingOptions:opts];
     self.amplitude.sslPinningEnabled = NO;

@@ -14,7 +14,7 @@
 #import "Amplitude+Test.h"
 #import "BaseTestCase.h"
 #import "AMPDeviceInfo.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
 // expose private methods for unit testing
 @interface PosemeshAmplitude (Tests)

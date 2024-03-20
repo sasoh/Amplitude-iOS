@@ -1,5 +1,5 @@
 //
-//  AMPServerZoneUtil.h
+//  AMPIdentifyInterceptor.h
 //  Copyright (c) 2021 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,14 +20,19 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-
 #import <Foundation/Foundation.h>
-#import "AMPServerZone.h"
+#import "PosemeshAMPIdentifyInterceptor.h"
+#import "PosemeshAMPDatabaseHelper.h"
 
-@interface AMPServerZoneUtil : NSObject
+@interface PosemeshAMPIdentifyInterceptor : NSObject
 
-+ (NSString *)getEventLogApi:(AMPServerZone)serverZone;
++ (instancetype _Nonnull)getIdentifyInterceptor:(PosemeshAMPDatabaseHelper *_Nonnull)dbHelper
+                                backgroundQueue:(NSOperationQueue *_Nonnull)backgroundQueue;
 
-+ (NSString *)getDynamicConfigApi:(AMPServerZone)serverZone;
+- (NSMutableDictionary *_Nonnull)intercept:(NSMutableDictionary *_Nonnull)event;
+- (NSMutableDictionary *_Nullable)getCombinedInterceptedIdentify;
+- (void)transferInterceptedIdentify;
+- (BOOL)setInterceptedIdentifyUploadPeriodSeconds:(int)uploadPeriodSeconds;
+- (void)setDisabled:(BOOL)disable;
 
 @end

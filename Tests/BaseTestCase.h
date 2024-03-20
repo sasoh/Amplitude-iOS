@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AMPDatabaseHelper.h"
+#import "PosemeshAMPDatabaseHelper.h"
 #if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
 #else
@@ -20,7 +20,7 @@ extern NSString *const userId;
 @interface BaseTestCase : XCTestCase
 
 @property (nonatomic, strong) PosemeshAmplitude *amplitude;
-@property (nonatomic, strong) AMPDatabaseHelper *databaseHelper;
+@property (nonatomic, strong) PosemeshAMPDatabaseHelper *databaseHelper;
 
 - (BOOL) archive:(id)rootObject toFile:(NSString *)path;
 - (id) unarchive:(NSString *)path;

@@ -16,19 +16,19 @@
 #endif
 
 #import "AMPConstants.h"
-#import "AMPDeviceInfo.h"
+#import "PosemeshAMPDeviceInfo.h"
 
 @interface DeviceInfoTests : XCTestCase
 
 @end
 
 @implementation DeviceInfoTests {
-    AMPDeviceInfo *_deviceInfo;
+    PosemeshAMPDeviceInfo *_deviceInfo;
 }
 
 - (void)setUp {
     [super setUp];
-    _deviceInfo = [[AMPDeviceInfo alloc] init];
+    _deviceInfo = [[PosemeshAMPDeviceInfo alloc] init];
 }
 
 - (void)tearDown {
@@ -95,8 +95,8 @@
 #endif
 
 - (void)testGenerateUUID {
-    NSString *a = [AMPDeviceInfo generateUUID];
-    NSString *b = [AMPDeviceInfo generateUUID];
+    NSString *a = [PosemeshAMPDeviceInfo generateUUID];
+    NSString *b = [PosemeshAMPDeviceInfo generateUUID];
     XCTAssertNotNil(a);
     XCTAssertNotNil(b);
     XCTAssertNotEqual(a, b);

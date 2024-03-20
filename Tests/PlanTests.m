@@ -17,7 +17,7 @@
 @implementation PlanTests { }
 
 - (void)testSetBranch {
-    AMPPlan *plan = [AMPPlan plan];
+    PosemeshAMPPlan *plan = [PosemeshAMPPlan plan];
     XCTAssertNil(plan.branch);
 
     NSString *branch = @"test";
@@ -35,7 +35,7 @@
 }
 
 - (void)testSetSource {
-    AMPPlan *plan = [AMPPlan plan];
+    PosemeshAMPPlan *plan = [PosemeshAMPPlan plan];
     XCTAssertNil(plan.source);
 
     NSString *source = @"mobile";
@@ -53,7 +53,7 @@
 }
 
 - (void)testSetVersion {
-    AMPPlan *plan = [AMPPlan plan];
+    PosemeshAMPPlan *plan = [PosemeshAMPPlan plan];
     XCTAssertNil(plan.version);
 
     NSString *version = @"1.0";
@@ -71,7 +71,7 @@
 }
 
 - (void)testSetVersionId {
-    AMPPlan *plan = [AMPPlan plan];
+    PosemeshAMPPlan *plan = [PosemeshAMPPlan plan];
     XCTAssertNil(plan.versionId);
 
     NSString *versionId = @"9ec23ba0-275f-468f-80d1-66b88bff9529";
@@ -94,7 +94,7 @@
     NSString *version = @"1.0.0";
     NSString *versionId = @"9ec23ba0-275f-468f-80d1-66b88bff9529";
 
-    AMPPlan *plan = [[[[[AMPPlan plan] setBranch:branch] setSource:source] setVersion:version] setVersionId:versionId];
+    PosemeshAMPPlan *plan = [[[[[PosemeshAMPPlan plan] setBranch:branch] setSource:source] setVersion:version] setVersionId:versionId];
 
     NSDictionary *dict = [plan toNSDictionary];
     XCTAssertEqualObjects([dict objectForKey:@"branch"], branch);

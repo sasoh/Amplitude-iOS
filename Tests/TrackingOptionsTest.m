@@ -25,7 +25,7 @@
 }
 
 - (void)testDisableFields {
-    AMPTrackingOptions *options = [[[[AMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage];
+    PosemeshAMPTrackingOptions *options = [[[[PosemeshAMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage];
 
     XCTAssertTrue([options shouldTrackCarrier]);
     XCTAssertFalse([options shouldTrackCity]);
@@ -46,7 +46,7 @@
 }
 
 - (void)testGetApiPropertiesTrackingOptions {
-    AMPTrackingOptions *options = [[[[[[AMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage] disableCountry] disableLatLng];
+    PosemeshAMPTrackingOptions *options = [[[[[[PosemeshAMPTrackingOptions options] disableCity] disableIPAddress] disableLanguage] disableCountry] disableLatLng];
 
     NSMutableDictionary *apiPropertiesTrackingOptions = [options getApiPropertiesTrackingOption];
     XCTAssertEqual([apiPropertiesTrackingOptions count], 4);
@@ -57,7 +57,7 @@
 }
 
 - (void)testGetCoppaControlTrackingOptions {
-    AMPTrackingOptions *options = [AMPTrackingOptions forCoppaControl];
+    PosemeshAMPTrackingOptions *options = [PosemeshAMPTrackingOptions forCoppaControl];
     XCTAssertFalse(options.shouldTrackIDFA);
     XCTAssertFalse(options.shouldTrackCity);
     XCTAssertFalse(options.shouldTrackIPAddress);
@@ -65,8 +65,8 @@
 }
 
 - (void)testMerging {
-    AMPTrackingOptions *options1 = [AMPTrackingOptions forCoppaControl];
-    AMPTrackingOptions *options2 = [[[AMPTrackingOptions options] disableCountry] disableLanguage];
+    PosemeshAMPTrackingOptions *options1 = [PosemeshAMPTrackingOptions forCoppaControl];
+    PosemeshAMPTrackingOptions *options2 = [[[PosemeshAMPTrackingOptions options] disableCountry] disableLanguage];
     [options1 mergeIn:options2];
     
     XCTAssertFalse(options1.shouldTrackIDFA);
@@ -79,7 +79,7 @@
 }
 
 - (void)testCopyOf {
-    AMPTrackingOptions *options = [AMPTrackingOptions copyOf:[AMPTrackingOptions forCoppaControl]];
+    PosemeshAMPTrackingOptions *options = [PosemeshAMPTrackingOptions copyOf:[PosemeshAMPTrackingOptions forCoppaControl]];
     
     XCTAssertFalse(options.shouldTrackIDFA);
     XCTAssertFalse(options.shouldTrackCity);

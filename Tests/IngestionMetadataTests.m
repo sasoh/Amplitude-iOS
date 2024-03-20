@@ -17,7 +17,7 @@
 @implementation IngestionMetadataTests { }
 
 - (void)testSetSourceName {
-    AMPIngestionMetadata *ingestionMetadata = [AMPIngestionMetadata ingestionMetadata];
+    PosemeshAMPIngestionMetadata *ingestionMetadata = [PosemeshAMPIngestionMetadata ingestionMetadata];
     XCTAssertNil(ingestionMetadata.sourceName);
 
     NSString *sourceName = @"ampli";
@@ -35,7 +35,7 @@
 }
 
 - (void)testSetSourceVersion {
-    AMPIngestionMetadata *ingestionMetadata = [AMPIngestionMetadata ingestionMetadata];
+    PosemeshAMPIngestionMetadata *ingestionMetadata = [PosemeshAMPIngestionMetadata ingestionMetadata];
     XCTAssertNil(ingestionMetadata.sourceVersion);
 
     NSString *sourceVersion = @"2.0.0";
@@ -56,7 +56,7 @@
     NSString *sourceName = @"ampli";
     NSString *sourceVersion = @"2.0.0";
 
-    AMPIngestionMetadata *ingestionMetadata = [[[AMPIngestionMetadata ingestionMetadata] setSourceName:sourceName] setSourceVersion:sourceVersion];
+    PosemeshAMPIngestionMetadata *ingestionMetadata = [[[PosemeshAMPIngestionMetadata ingestionMetadata] setSourceName:sourceName] setSourceVersion:sourceVersion];
 
     NSDictionary *dict = [ingestionMetadata toNSDictionary];
     XCTAssertEqualObjects([dict objectForKey:@"source_name"], sourceName);

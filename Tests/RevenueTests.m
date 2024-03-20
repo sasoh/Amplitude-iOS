@@ -25,7 +25,7 @@
 }
 
 - (void)testProductId {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertNil(revenue.productId);
 
     NSString *productId = @"testProductId";
@@ -43,7 +43,7 @@
 }
 
 - (void)testQuantity {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertEqual(revenue.quantity, 1);
 
     NSInteger quantity = 100;
@@ -55,7 +55,7 @@
 }
 
 - (void)testPrice {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertNil(revenue.price);
 
     NSNumber *price = [NSNumber numberWithDouble:10.99];
@@ -67,7 +67,7 @@
 }
 
 - (void)testRevenueType {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertNil(revenue.revenueType);
 
     NSString *revenueType = @"testRevenueType";
@@ -88,7 +88,7 @@
 }
 
 - (void)testRevenueProperties {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertNil(revenue.properties);
 
     NSDictionary *props = [NSDictionary dictionaryWithObject:@"Boston" forKey:@"city"];
@@ -104,14 +104,14 @@
 }
 
 - (void)testValidRevenue {
-    AMPRevenue *revenue = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue = [PosemeshAMPRevenue revenue];
     XCTAssertFalse([revenue isValidRevenue]);
     [revenue setProductIdentifier:@"testProductId"];
     XCTAssertFalse([revenue isValidRevenue]);
     [revenue setPrice:[NSNumber numberWithDouble:10.99]];
     XCTAssertTrue([revenue isValidRevenue]);
 
-    AMPRevenue *revenue2 = [AMPRevenue revenue];
+    PosemeshAMPRevenue *revenue2 = [PosemeshAMPRevenue revenue];
     XCTAssertFalse([revenue2 isValidRevenue]);
     [revenue2 setPrice:[NSNumber numberWithDouble:10.99]];
     [revenue2 setQuantity:10];
@@ -127,7 +127,7 @@
     NSString *revenueType = @"testRevenueType";
     NSDictionary *props = [NSDictionary dictionaryWithObject:@"San Francisco" forKey:@"city"];
 
-    AMPRevenue *revenue = [[[[AMPRevenue revenue] setProductIdentifier:productId] setPrice:price] setQuantity:quantity];
+    PosemeshAMPRevenue *revenue = [[[[PosemeshAMPRevenue revenue] setProductIdentifier:productId] setPrice:price] setQuantity:quantity];
     [[revenue setRevenueType:revenueType] setEventProperties:props];
 
     NSDictionary *dict = [revenue toNSDictionary];

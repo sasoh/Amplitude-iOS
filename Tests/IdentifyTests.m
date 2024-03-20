@@ -47,7 +47,7 @@
     NSString *property7 = @"array value";
     NSArray *value7 = [NSArray array];
 
-    AMPIdentify *identify = [[AMPIdentify identify] add:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] add:property1 value:value1];
     [[[identify add:property2 value:value2] add:property3 value:value3] add:property4 value:value4];
     [[[identify add:property5 value:value5] add:property6 value:value6] add:property7 value:value7];
 
@@ -82,7 +82,7 @@
     NSString *property4 = @"array value";
     NSArray *value4 = [NSArray array];
 
-    AMPIdentify *identify = [[AMPIdentify identify] set:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] set:property1 value:value1];
     [[[identify set:property2 value:value2] set:property3 value:value3] set:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -114,7 +114,7 @@
     NSString *property4 = @"array value";
     NSArray *value4 = [NSArray array];
 
-    AMPIdentify *identify = [[AMPIdentify identify] setOnce:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] setOnce:property1 value:value1];
     [[[identify setOnce:property2 value:value2] setOnce:property3 value:value3] setOnce:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -148,7 +148,7 @@
     [value4 addObject:@"test"];
     [value4 addObject:[NSNumber numberWithInt:15]];
 
-    AMPIdentify *identify = [[AMPIdentify identify] append:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] append:property1 value:value1];
     [[[identify append:property2 value:value2] append:property3 value:value3] append:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -182,7 +182,7 @@
     [value4 addObject:@"test"];
     [value4 addObject:[NSNumber numberWithInt:15]];
 
-    AMPIdentify *identify = [[AMPIdentify identify] prepend:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] prepend:property1 value:value1];
     [[[identify prepend:property2 value:value2] prepend:property3 value:value3] prepend:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -205,7 +205,7 @@
     NSString *property1 = @"testProperty1";
     NSString *property2 = @"testProperty2";
 
-    AMPIdentify *identify = [AMPIdentify identify];
+    PosemeshAMPIdentify *identify = [PosemeshAMPIdentify identify];
     [[identify unset:property1] unset:property2];
 
     NSMutableDictionary *operations = [NSMutableDictionary dictionary];
@@ -233,7 +233,7 @@
     [value4 addObject:@"test"];
     [value4 addObject:[NSNumber numberWithInt:15]];
 
-    AMPIdentify *identify = [[AMPIdentify identify] preInsert:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] preInsert:property1 value:value1];
     [[[identify preInsert:property2 value:value2] preInsert:property3 value:value3] preInsert:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -267,7 +267,7 @@
     [value4 addObject:@"test"];
     [value4 addObject:[NSNumber numberWithInt:15]];
 
-    AMPIdentify *identify = [[AMPIdentify identify] postInsert:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] postInsert:property1 value:value1];
     [[[identify postInsert:property2 value:value2] postInsert:property3 value:value3] postInsert:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -301,7 +301,7 @@
     [value4 addObject:@"test"];
     [value4 addObject:[NSNumber numberWithInt:15]];
 
-    AMPIdentify *identify = [[AMPIdentify identify] remove:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] remove:property1 value:value1];
     [[[identify remove:property2 value:value2] remove:property3 value:value3] remove:property4 value:value4];
 
     // identify should ignore this since duplicate key
@@ -346,7 +346,7 @@
     NSString *property8 = @"boolean value2";
     NSNumber *value8 = [NSNumber numberWithBool:FALSE];
 
-    AMPIdentify *identify = [[AMPIdentify identify] setOnce:property1 value:value1];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] setOnce:property1 value:value1];
     [[[[[[[identify add:property2 value:value2] set:property3 value:value3] unset:property4] append:property5 value:value5] preInsert:property6 value:value6] postInsert:property7 value:value7] remove:property8 value:value8];
 
     // identify should ignore this since duplicate key
@@ -373,7 +373,7 @@
     NSNumber *value2 = [NSNumber numberWithDouble:0.123];
     NSNumber *value3 = [NSNumber numberWithBool:YES];
 
-    AMPIdentify *identify = [AMPIdentify identify];
+    PosemeshAMPIdentify *identify = [PosemeshAMPIdentify identify];
     [[[[identify setOnce:property value:value1] add:property value:value2] set:property value:value3] unset:property];
 
     NSMutableDictionary *operations = [NSMutableDictionary dictionary];
@@ -390,7 +390,7 @@
     NSString *key = @"url";
     NSURL *url = [NSURL URLWithString:urlString];
 
-    AMPIdentify *identify = [AMPIdentify identify];
+    PosemeshAMPIdentify *identify = [PosemeshAMPIdentify identify];
     [identify set:key value:url]; // should coerce NSURL object into a string
 
     NSMutableDictionary *operations = [NSMutableDictionary dictionary];
@@ -408,7 +408,7 @@
     NSNumber *value2 = [NSNumber numberWithDouble:0.123];
     NSNumber *value3 = [NSNumber numberWithBool:YES];
 
-    AMPIdentify *identify = [[AMPIdentify identify] clearAll];
+    PosemeshAMPIdentify *identify = [[PosemeshAMPIdentify identify] clearAll];
     [[[[identify setOnce:property value:value1] add:property value:value2] set:property value:value3] unset:property];
 
     NSMutableDictionary *expected = [NSMutableDictionary dictionary];
@@ -423,7 +423,7 @@
     NSNumber *value2 = [NSNumber numberWithDouble:0.123];
     NSNumber *value3 = [NSNumber numberWithBool:YES];
 
-    AMPIdentify *identify = [AMPIdentify identify];
+    PosemeshAMPIdentify *identify = [PosemeshAMPIdentify identify];
     [[[[identify setOnce:property value:value1] add:property value:value2] set:property value:value3] unset:property];
     [identify clearAll];
 

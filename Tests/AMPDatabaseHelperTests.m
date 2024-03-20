@@ -7,18 +7,18 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "AMPDatabaseHelper.h"
+#import "PosemeshAMPDatabaseHelper.h"
 #import "AMPConstants.h"
 
 @interface AMPDatabaseHelperTests : XCTestCase
-@property (nonatomic, strong)  AMPDatabaseHelper *databaseHelper;
+@property (nonatomic, strong)  PosemeshAMPDatabaseHelper *databaseHelper;
 @end
 
 @implementation AMPDatabaseHelperTests {}
 
 - (void)setUp {
     [super setUp];
-    self.databaseHelper = [AMPDatabaseHelper getDatabaseHelper];
+    self.databaseHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
     [self.databaseHelper resetDB:NO];
 }
 
@@ -30,23 +30,23 @@
 
 - (void)testGetDatabaseHelper {
     // test backwards compatibility on default instance
-    AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
-    XCTAssertEqual(dbHelper, [AMPDatabaseHelper getDatabaseHelper:nil]);
-    XCTAssertEqual(dbHelper, [AMPDatabaseHelper getDatabaseHelper:@""]);
-    XCTAssertEqual(dbHelper, [AMPDatabaseHelper getDatabaseHelper:kAMPDefaultInstance]);
+    PosemeshAMPDatabaseHelper *dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
+    XCTAssertEqual(dbHelper, [PosemeshAMPDatabaseHelper getDatabaseHelper:nil]);
+    XCTAssertEqual(dbHelper, [PosemeshAMPDatabaseHelper getDatabaseHelper:@""]);
+    XCTAssertEqual(dbHelper, [PosemeshAMPDatabaseHelper getDatabaseHelper:kAMPDefaultInstance]);
 
-    AMPDatabaseHelper *a = [AMPDatabaseHelper getDatabaseHelper:@"a"];
-    AMPDatabaseHelper *b = [AMPDatabaseHelper getDatabaseHelper:@"b"];
+    PosemeshAMPDatabaseHelper *a = [PosemeshAMPDatabaseHelper getDatabaseHelper:@"a"];
+    PosemeshAMPDatabaseHelper *b = [PosemeshAMPDatabaseHelper getDatabaseHelper:@"b"];
     XCTAssertNotEqual(dbHelper, a);
     XCTAssertNotEqual(dbHelper, b);
     XCTAssertNotEqual(a, b);
-    XCTAssertEqual(a, [AMPDatabaseHelper getDatabaseHelper:@"a"]);
-    XCTAssertEqual(b, [AMPDatabaseHelper getDatabaseHelper:@"b"]);
+    XCTAssertEqual(a, [PosemeshAMPDatabaseHelper getDatabaseHelper:@"a"]);
+    XCTAssertEqual(b, [PosemeshAMPDatabaseHelper getDatabaseHelper:@"b"]);
 
     // test case insensitive instance name
-    XCTAssertEqual(a, [AMPDatabaseHelper getDatabaseHelper:@"A"]);
-    XCTAssertEqual(b, [AMPDatabaseHelper getDatabaseHelper:@"B"]);
-    XCTAssertEqual(dbHelper, [AMPDatabaseHelper getDatabaseHelper:[kAMPDefaultInstance uppercaseString]]);
+    XCTAssertEqual(a, [PosemeshAMPDatabaseHelper getDatabaseHelper:@"A"]);
+    XCTAssertEqual(b, [PosemeshAMPDatabaseHelper getDatabaseHelper:@"B"]);
+    XCTAssertEqual(dbHelper, [PosemeshAMPDatabaseHelper getDatabaseHelper:[kAMPDefaultInstance uppercaseString]]);
 
     // test each instance maintains separate database files
     XCTAssertTrue([a.databasePath rangeOfString:@"com.amplitude.database_a"].location != NSNotFound);
@@ -59,9 +59,9 @@
 }
 
 - (void)testSeparateInstances {
-    AMPDatabaseHelper *dbHelper = [AMPDatabaseHelper getDatabaseHelper];
-    AMPDatabaseHelper *a = [AMPDatabaseHelper getDatabaseHelper:@"a"];
-    AMPDatabaseHelper *b = [AMPDatabaseHelper getDatabaseHelper:@"b"];
+    PosemeshAMPDatabaseHelper *dbHelper = [PosemeshAMPDatabaseHelper getDatabaseHelper];
+    PosemeshAMPDatabaseHelper *a = [PosemeshAMPDatabaseHelper getDatabaseHelper:@"a"];
+    PosemeshAMPDatabaseHelper *b = [PosemeshAMPDatabaseHelper getDatabaseHelper:@"b"];
 
     [a resetDB:NO];
     [b resetDB:NO];

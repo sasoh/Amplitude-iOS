@@ -29,11 +29,11 @@
 #endif
 #endif
 
-#import "AMPPlan.h"
+#import "PosemeshAMPPlan.h"
 #import "AMPConstants.h"
-#import "AMPUtils.h"
+#import "PosemeshAMPUtils.h"
 
-@implementation AMPPlan
+@implementation PosemeshAMPPlan
 
 /*
  * Create an AMPPlan object
@@ -42,8 +42,8 @@
     return [[self alloc] init];
 }
 
-- (AMPPlan *)setBranch:(NSString *)branch {
-    if ([AMPUtils isEmptyString:branch]) {
+- (PosemeshAMPPlan *)setBranch:(NSString *)branch {
+    if ([PosemeshAMPUtils isEmptyString:branch]) {
         AMPLITUDE_LOG(@"Invalid empty branch");
         return self;
     }
@@ -52,8 +52,8 @@
     return self;
 }
 
-- (AMPPlan *)setSource:(NSString *)source {
-    if ([AMPUtils isEmptyString:source]) {
+- (PosemeshAMPPlan *)setSource:(NSString *)source {
+    if ([PosemeshAMPUtils isEmptyString:source]) {
         AMPLITUDE_LOG(@"Invalid empty source");
         return self;
     }
@@ -62,8 +62,8 @@
     return self;
 }
 
-- (AMPPlan *)setVersion:(NSString *)version {
-    if ([AMPUtils isEmptyString:version]) {
+- (PosemeshAMPPlan *)setVersion:(NSString *)version {
+    if ([PosemeshAMPUtils isEmptyString:version]) {
         AMPLITUDE_LOG(@"Invalid empty version");
         return self;
     }
@@ -72,8 +72,8 @@
     return self;
 }
 
-- (AMPPlan *)setVersionId:(NSString *)versionId {
-    if ([AMPUtils isEmptyString:versionId]) {
+- (PosemeshAMPPlan *)setVersionId:(NSString *)versionId {
+    if ([PosemeshAMPUtils isEmptyString:versionId]) {
         AMPLITUDE_LOG(@"Invalid empty versionId");
         return self;
     }

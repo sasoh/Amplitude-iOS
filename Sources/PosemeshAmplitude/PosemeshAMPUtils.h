@@ -1,6 +1,6 @@
 //
-//  AMPConfigManager.h
-//  Copyright (c) 2020 Amplitude Inc. (https://amplitude.com/)
+//  AMPUtils.h
+//  Copyright (c) 2015 Amplitude Inc. (https://amplitude.com/)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,29 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AMPServerZone.h"
+#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#import <UIKit/UIKit.h>
+#endif
 
-NS_ASSUME_NONNULL_BEGIN
+@interface PosemeshAMPUtils : NSObject
 
-@interface AMPConfigManager : NSObject
++ (NSString *)generateUUID;
++ (id)makeJSONSerializable:(id)obj;
++ (NSMutableDictionary *)addNonNilEntriesToDictionary:(NSMutableDictionary *)destination fromDictionary:(NSDictionary *)source;
++ (BOOL)isEmptyString:(NSString *)str;
++ (NSDictionary *)validateGroups:(NSDictionary *)obj;
++ (NSString *)platformDataDirectory;
++ (NSDictionary<NSString *, NSString *> *)getEnvironment;
++ (BOOL)isSandboxEnabled;
 
-@property (nonatomic, strong, readonly) NSString *ingestionEndpoint;
+#if !TARGET_OS_OSX && !TARGET_OS_WATCH
++ (UIApplication *)getSharedApplication;
+#endif
 
-+ (instancetype)sharedInstance;
-- (void)refresh:(void(^)(void))completionHandler serverZone:(AMPServerZone)serverZone;
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
++ (NSInteger)barBottomOffset;
++ (CGFloat)statusBarHeight;
++ (UIWindow *)getKeyWindow;
+#endif
 
 @end
-
-NS_ASSUME_NONNULL_END
